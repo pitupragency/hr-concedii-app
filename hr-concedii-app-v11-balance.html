@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HR Concedii App Actions</title>
+  <link rel="preconnect" href="https://api.fontshare.com">
+  <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&display=swap" rel="stylesheet">
+  <style>
+    :root{--bg:#f7f4f8;--surface:#fff;--surface-2:#faf6f9;--border:#ead7e2;--text:#271721;--muted:#76576a;--primary:#AA0C60;--primary-soft:#f8dbe9;--danger:#b42318;--success:#2d7d46;--warning:#9b5d00;--radius:16px;--font:'Satoshi',Arial,sans-serif}
+    *{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--text);font-family:var(--font)} .hidden{display:none!important}
+    .login-wrap{min-height:100vh;display:grid;place-items:center;padding:24px}.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px}
+    .login-card{width:min(100%,460px);display:grid;gap:16px}.brand{display:flex;gap:12px;align-items:center}.logo{width:48px;height:48px;border-radius:14px;background:linear-gradient(135deg,var(--primary),#d63384);display:grid;place-items:center;color:#fff;font-weight:700}
+    h1,h2,h3,p{margin:0}.muted{color:var(--muted)} .notice,.error,.success{padding:14px 16px;border-radius:12px}.notice{background:var(--primary-soft)} .error{background:rgba(180,35,24,.08);color:var(--danger)} .success{background:rgba(45,125,70,.10);color:var(--success)}
+    .form,.form-grid{display:grid;gap:14px} .form-grid{grid-template-columns:repeat(12,1fr)} label{display:grid;gap:8px;font-weight:700} input,button,select,textarea{font:inherit} input,select,textarea{padding:14px 16px;border-radius:12px;border:1px solid var(--border);background:var(--surface-2);width:100%} textarea{min-height:88px;resize:vertical}
+    .btn{padding:14px 16px;border-radius:12px;border:1px solid var(--border);background:var(--surface);cursor:pointer;font-weight:700}.btn-primary{background:var(--primary);color:#fff;border-color:var(--primary)} .btn-small{padding:8px 12px;font-size:14px}
+    .app{display:grid;grid-template-columns:260px 1fr;min-height:100vh}.sidebar{background:var(--surface);border-right:1px solid var(--border);padding:24px;display:flex;flex-direction:column;gap:24px}.nav{display:grid;gap:8px}.nav button{text-align:left;padding:14px 16px;border-radius:12px;border:1px solid transparent;background:transparent}.nav button.active{background:var(--primary-soft);color:var(--primary)}
+    .main{padding:24px;display:grid;gap:24px}.top{display:flex;justify-content:space-between;align-items:center}.badge{padding:8px 12px;border-radius:999px;background:var(--primary-soft);color:var(--primary);font-size:12px;font-weight:700}.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:16px}.kpi{grid-column:span 4}.kpi .card{height:100%}.value{font-size:24px;font-weight:700}
+    table{width:100%;border-collapse:collapse} th,td{padding:12px 10px;border-bottom:1px solid var(--border);text-align:left;vertical-align:top} th{color:var(--muted);font-size:14px}.view.hidden{display:none}.status{padding:6px 10px;border-radius:999px;font-size:12px;font-weight:700;display:inline-flex}.approved{background:rgba(45,125,70,.12);color:var(--success)}.pending{background:rgba(155,93,0,.12);color:var(--warning)}.rejected{background:rgba(180,35,24,.12);color:var(--danger)}
+    .section-head{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:12px}.stack{display:grid;gap:16px}.span-6{grid-column:span 6}.span-12{grid-column:span 12}.actions{display:flex;gap:8px;flex-wrap:wrap}
+    @media (max-width:960px){.app{grid-template-columns:1fr}.sidebar{border-right:0;border-bottom:1px solid var(--border)}.top,.section-head{flex-direction:column;align-items:flex-start}.kpi,.span-6,.span-12{grid-column:span 12}}
+  </style>
+</head>
+<body>
+<section id="loginScreen" class="login-wrap">
+  <div class="card login-card">
+    <div class="brand"><div class="logo">HR</div><div><h1>Concedii Team</h1><p class="muted">Login live cu Supabase</p></div></div>
+    <div class="notice">Versiune funcțională pentru test: employee poate crea cereri, iar admin le poate aproba sau respinge.</div>
+    <div id="loginError" class="error hidden"></div>
+    <form id="loginForm" class="form">
+      <label>Email<input id="email" type="email" required></label>
+      <label>Parolă<input id="password" type="password" required></label>
+      <button class="btn btn-primary" type="submit">Autentificare</button>
+    </form>
+  </div>
+</section>
+<section id="appScreen" class="hidden">
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand"><div class="logo">HR</div><div><h2>HR Concedii</h2><p class="muted">Pi2 · #AA0C60</p></div></div>
+      <nav class="nav">
+        <button class="active" data-view="dashboard">Dashboard</button>
+        <button data-view="requests">Cereri</button>
+        <button data-view="employees">Angajați</button>
+      </nav>
+      <button class="btn" id="logoutBtn">Logout</button>
+    </aside>
+    <main class="main">
+      <div id="appError" class="error hidden"></div>
+      <div id="appSuccess" class="success hidden"></div>
+      <div class="top">
+        <div><h2 id="welcomeTitle">Bun venit</h2><p class="muted" id="welcomeSubtitle"></p></div>
+        <div class="badge" id="roleBadge">Role</div>
+      </div>
+      <section id="view-dashboard" class="view">
+        <div class="grid">
+          <div class="kpi"><div class="card"><div class="muted">Utilizator logat</div><div class="value" id="kpiUser">-</div></div></div>
+          <div class="kpi"><div class="card"><div class="muted">Rol</div><div class="value" id="kpiRole">-</div></div></div>
+          <div class="kpi"><div class="card"><div class="muted">Total cereri încărcate</div><div class="value" id="kpiRequests">0</div></div></div>
+          <div class="kpi"><div class="card"><div class="muted">Zile aprobate</div><div class="value" id="kpiApprovedDays">0</div></div></div>
+          <div class="kpi"><div class="card"><div class="muted">Sold zile rămase</div><div class="value" id="kpiBalance">0</div></div></div>
+        </div>
+      </section>
+      <section id="view-requests" class="view hidden stack">
+        <div class="card" id="requestFormCard">
+          <div class="section-head"><h3>Cerere nouă</h3><span class="muted">Disponibilă pentru employee și admin</span></div>
+          <form id="requestForm" class="form-grid">
+            <label class="span-6">Data început<input id="startDate" type="date" required></label>
+            <label class="span-6">Data final<input id="endDate" type="date" required></label>
+            <label class="span-6">Tip concediu<select id="leaveTypeSelect"></select></label>
+            <label class="span-6">Total zile<input id="totalDays" type="number" step="0.5" min="0.5" required></label>
+            <label class="span-12">Notă<textarea id="requestNote" placeholder="Ex: concediu de odihnă"></textarea></label>
+            <div class="span-12"><button class="btn btn-primary" type="submit">Trimite cererea</button></div>
+          </form>
+        </div>
+        <div class="card">
+          <div class="section-head"><h3>Cereri concediu</h3><span class="muted" id="requestsHint"></span></div>
+          <table>
+            <thead><tr><th>Angajat</th><th>Început</th><th>Final</th><th>Total zile</th><th>Status</th><th>Notă</th><th>Acțiuni</th></tr></thead>
+            <tbody id="requestsTableBody"></tbody>
+          </table>
+        </div>
+      </section>
+      <section id="view-employees" class="view hidden">
+        <div class="card"><div class="section-head"><h3>Angajați vizibili</h3><span class="muted" id="employeesHint"></span></div><table><thead><tr><th>Nume</th><th>Email</th><th>Rol</th><th>Zile/an</th><th>Status</th></tr></thead><tbody id="employeesTableBody"></tbody></table></div>
+      </section>
+    </main>
+  </div>
+</section>
+<script type="module">
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
+const supabase = createClient('https://giaxergqcrvezigqkmea.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdpYXhlcmdxY3J2ZXppZ3FrbWVhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY3MzEwNDksImV4cCI6MjA5MjMwNzA0OX0.-mKUwl89qsJ8OkmQWLB_E0Cm5vkon6JG-2ydhmQoXKA')
+let profile=null, requests=[], employees=[], leaveTypes=[]
+const loginScreen=document.getElementById('loginScreen'), appScreen=document.getElementById('appScreen'), loginError=document.getElementById('loginError')
+const show=(id,msg)=>{const e=document.getElementById(id);e.textContent=msg;e.classList.remove('hidden')}
+const hide=id=>{const e=document.getElementById(id);e.textContent='';e.classList.add('hidden')}
+const statusBadge=s=>`<span class="status ${s==='approved'?'approved':s==='rejected'?'rejected':'pending'}">${s||'-'}</span>`
+const formatNumber=n=>Number.isFinite(n)?(Math.round(n*10)/10).toString():'0'
+function computeApprovedDays(rows, employeeId=null){return rows.filter(r=>r.status==='approved' && (!employeeId || r.employee_id===employeeId)).reduce((s,r)=>s+Number(r.total_days||0),0)}
+function updateBalanceKPIs(){const approvedDays = profile.role==='admin' ? requests.filter(r=>r.status==='approved').reduce((s,r)=>s+Number(r.total_days||0),0) : computeApprovedDays(requests, profile.id); const allowance = Number(profile.annual_allowance||0); const balance = profile.role==='admin' ? approvedDays : Math.max(allowance - approvedDays, 0); document.getElementById('kpiApprovedDays').textContent = formatNumber(approvedDays); document.getElementById('kpiBalance').textContent = profile.role==='admin' ? '—' : formatNumber(balance)}
+function calcDays(a,b){if(!a||!b) return ''; const start=new Date(a), end=new Date(b); if(end<start) return ''; const ms=end-start; return (ms/86400000)+1}
+function renderProfile(){document.getElementById('welcomeTitle').textContent=`Bun venit, ${profile.full_name}`;document.getElementById('welcomeSubtitle').textContent=`Ai intrat cu ${profile.email}`;document.getElementById('roleBadge').textContent=`Role: ${profile.role}`;document.getElementById('kpiUser').textContent=profile.full_name;document.getElementById('kpiRole').textContent=profile.role;document.getElementById('requestsHint').textContent=profile.role==='admin'?'Vezi și administrezi toate cererile':'Vezi și trimiți cererile tale';document.getElementById('employeesHint').textContent=profile.role==='admin'?'Vezi toți angajații':'Vezi doar profilul tău'; document.querySelector('#kpiApprovedDays').previousElementSibling ? null : null}
+function renderLeaveTypes(){const sel=document.getElementById('leaveTypeSelect'); sel.innerHTML = leaveTypes.length ? leaveTypes.map(t=>`<option value="${t.id}">${t.name}</option>`).join('') : '<option value="">Fără tipuri definite</option>'}
+function renderEmployeesTable(rows){document.getElementById('employeesTableBody').innerHTML=rows.length?rows.map(emp=>`<tr><td>${emp.full_name}</td><td>${emp.email}</td><td>${emp.role}</td><td>${emp.annual_allowance??'-'}</td><td>${emp.is_active?'Activ':'Inactiv'}</td></tr>`).join(''):'<tr><td colspan="5">Nu există angajați vizibili.</td></tr>'}
+function renderRequests(){document.getElementById('kpiRequests').textContent=requests.length; updateBalanceKPIs(); document.getElementById('requestsTableBody').innerHTML=requests.length?requests.map(r=>`<tr><td>${r.employee?.full_name || profile.full_name}</td><td>${r.start_date||'-'}</td><td>${r.end_date||'-'}</td><td>${r.total_days??'-'}</td><td>${statusBadge(r.status)}</td><td>${r.note||'-'}</td><td>${profile.role==='admin'&&r.status==='pending'?`<div class="actions"><button class="btn btn-small" data-action="approve" data-id="${r.id}">Aprobă</button><button class="btn btn-small" data-action="reject" data-id="${r.id}">Respinge</button></div>`:'-'}</td></tr>`).join(''):'<tr><td colspan="7">Nu există încă cereri.</td></tr>'}
+async function loadProfile(){const {data:{user},error:uErr}=await supabase.auth.getUser(); if(uErr) throw uErr; if(!user) return null; const {data,error}=await supabase.from('employees').select('id, full_name, email, role, annual_allowance, is_active').eq('auth_user_id',user.id).single(); if(error) throw error; profile=data; profile.auth_user_id=user.id; return data}
+async function loadLeaveTypes(){const {data,error}=await supabase.from('leave_types').select('id, name').order('name'); if(error) throw error; leaveTypes=data||[]; renderLeaveTypes()}
+async function loadEmployees(){if(profile.role==='admin'){const {data,error}=await supabase.from('employees').select('id, full_name, email, role, annual_allowance, is_active').order('full_name'); if(error) throw error; employees=data||[]} else {employees=[profile]} renderEmployeesTable(employees)}
+async function loadRequests(){if(profile.role==='admin'){const {data,error}=await supabase.from('leave_requests').select('id, employee_id, leave_type_id, start_date, end_date, total_days, status, note, created_at, employee:employees!leave_requests_employee_id_fkey(full_name)').order('created_at',{ascending:false}); if(error) throw error; requests=data||[]} else {const {data,error}=await supabase.from('leave_requests').select('id, employee_id, leave_type_id, start_date, end_date, total_days, status, note, created_at').eq('employee_id', profile.id).order('created_at',{ascending:false}); if(error) throw error; requests=data||[]} renderRequests()}
+async function refreshAll(){hide('appError'); await loadLeaveTypes(); await loadEmployees(); await loadRequests()}
+async function boot(){hide('appError'); await loadProfile(); if(!profile){show('loginError','Contul există în Auth, dar nu a fost găsit în employees.'); return} loginScreen.classList.add('hidden'); appScreen.classList.remove('hidden'); renderProfile(); try{await refreshAll()}catch(err){console.error(err); show('appError','Eroare la încărcarea datelor: '+(err.message||JSON.stringify(err)))} }
+
+document.getElementById('loginForm').addEventListener('submit', async e=>{e.preventDefault(); hide('loginError'); const email=document.getElementById('email').value.trim(), password=document.getElementById('password').value; const {error}=await supabase.auth.signInWithPassword({email,password}); if(error){show('loginError',error.message); return} await boot()})
+document.getElementById('logoutBtn').addEventListener('click', async ()=>{await supabase.auth.signOut(); appScreen.classList.add('hidden'); loginScreen.classList.remove('hidden')})
+document.querySelectorAll('[data-view]').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('[data-view]').forEach(b=>b.classList.remove('active'));btn.classList.add('active');document.querySelectorAll('.view').forEach(v=>v.classList.add('hidden'));document.getElementById('view-'+btn.dataset.view).classList.remove('hidden')}))
+
+document.getElementById('startDate').addEventListener('change',()=>{const v=calcDays(document.getElementById('startDate').value,document.getElementById('endDate').value); if(v) document.getElementById('totalDays').value=v})
+document.getElementById('endDate').addEventListener('change',()=>{const v=calcDays(document.getElementById('startDate').value,document.getElementById('endDate').value); if(v) document.getElementById('totalDays').value=v})
+
+document.getElementById('requestForm').addEventListener('submit', async e=>{
+  e.preventDefault(); hide('appError'); hide('appSuccess')
+  try{
+    const payload={
+      employee_id: profile.id,
+      leave_type_id: document.getElementById('leaveTypeSelect').value || null,
+      start_date: document.getElementById('startDate').value,
+      end_date: document.getElementById('endDate').value,
+      total_days: Number(document.getElementById('totalDays').value),
+      note: document.getElementById('requestNote').value.trim() || null
+    }
+    const {error}=await supabase.from('leave_requests').insert(payload)
+    if(error) throw error
+    document.getElementById('requestForm').reset();
+    show('appSuccess','Cererea a fost trimisă cu succes.')
+    await loadRequests()
+  }catch(err){console.error(err); show('appError','Nu am putut salva cererea: '+(err.message||JSON.stringify(err))+' — verifică policy INSERT pe leave_requests pentru employee_id = profilul logat.')}
+})
+
+document.getElementById('requestsTableBody').addEventListener('click', async e=>{
+  const btn=e.target.closest('[data-action]'); if(!btn) return
+  hide('appError'); hide('appSuccess')
+  try{
+    const status=btn.dataset.action==='approve'?'approved':'rejected'
+    const {error}=await supabase.from('leave_requests').update({status}).eq('id',btn.dataset.id)
+    if(error) throw error
+    show('appSuccess', status==='approved'?'Cererea a fost aprobată.':'Cererea a fost respinsă.')
+    await loadRequests()
+  }catch(err){console.error(err); show('appError','Nu am putut actualiza cererea: '+(err.message||JSON.stringify(err)))}
+})
+
+const {data:{session}}=await supabase.auth.getSession(); if(session) await boot()
+</script>
+</body>
+</html>
