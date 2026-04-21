@@ -8,87 +8,24 @@
   <link rel="preconnect" href="https://api.fontshare.com">
   <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&display=swap" rel="stylesheet">
   <style>
-    :root{
-      --bg:#f7f4f8;
-      --surface:#fff;
-      --surface-2:#faf6f9;
-      --border:#ead7e2;
-      --text:#271721;
-      --muted:#76576a;
-      --primary:#AA0C60;
-      --primary-soft:#f8dbe9;
-      --danger:#b42318;
-      --success:#2d7d46;
-      --warning:#9b5d00;
-      --radius:16px;
-      --font:'Satoshi',Arial,sans-serif
-    }
-    *{box-sizing:border-box}
-    body{margin:0;background:var(--bg);color:var(--text);font-family:var(--font)}
-    .hidden{display:none!important}
-    .login-wrap{min-height:100vh;display:grid;place-items:center;padding:24px}
-    .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px}
-    .login-card{width:min(100%,460px);display:grid;gap:16px}
-    .brand{display:flex;gap:12px;align-items:center}
-    .logo{width:48px;height:48px;border-radius:14px;background:linear-gradient(135deg,var(--primary),#d63384);display:grid;place-items:center;color:#fff;font-weight:700}
-    h1,h2,h3,p{margin:0}
-    .muted{color:var(--muted)}
-    .notice,.error,.success{padding:14px 16px;border-radius:12px}
-    .notice{background:var(--primary-soft)}
-    .error{background:rgba(180,35,24,.08);color:var(--danger)}
-    .success{background:rgba(45,125,70,.10);color:var(--success)}
-    .form,.form-grid{display:grid;gap:14px}
-    .form-grid{grid-template-columns:repeat(12,1fr)}
-    label{display:grid;gap:8px;font-weight:700}
-    input,button,select,textarea{font:inherit}
-    input,select,textarea{padding:14px 16px;border-radius:12px;border:1px solid var(--border);background:var(--surface-2);width:100%}
-    textarea{min-height:88px;resize:vertical}
-    .btn{padding:14px 16px;border-radius:12px;border:1px solid var(--border);background:var(--surface);cursor:pointer;font-weight:700}
-    .btn-primary{background:var(--primary);color:#fff;border-color:var(--primary)}
-    .btn-small{padding:8px 12px;font-size:14px}
-    .app{display:grid;grid-template-columns:260px 1fr;min-height:100vh}
-    .sidebar{background:var(--surface);border-right:1px solid var(--border);padding:24px;display:flex;flex-direction:column;gap:24px}
-    .nav{display:grid;gap:8px}
-    .nav button{text-align:left;padding:14px 16px;border-radius:12px;border:1px solid transparent;background:transparent}
-    .nav button.active{background:var(--primary-soft);color:var(--primary)}
-    .main{padding:24px;display:grid;gap:24px}
-    .top{display:flex;justify-content:space-between;align-items:center}
-    .badge{padding:8px 12px;border-radius:999px;background:var(--primary-soft);color:var(--primary);font-size:12px;font-weight:700}
-    .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:16px}
-    .kpi{grid-column:span 4}
-    .kpi .card{height:100%}
-    .value{font-size:24px;font-weight:700}
-    table{width:100%;border-collapse:collapse}
-    th,td{padding:12px 10px;border-bottom:1px solid var(--border);text-align:left;vertical-align:top}
-    th{color:var(--muted);font-size:14px}
-    .view.hidden{display:none}
-    .status{padding:6px 10px;border-radius:999px;font-size:12px;font-weight:700;display:inline-flex}
-    .approved{background:rgba(45,125,70,.12);color:var(--success)}
-    .pending{background:rgba(155,93,0,.12);color:var(--warning)}
-    .rejected{background:rgba(180,35,24,.12);color:var(--danger)}
-    .section-head{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:12px}
-    .stack{display:grid;gap:16px}
-    .span-6{grid-column:span 6}
-    .span-12{grid-column:span 12}
-    .actions{display:flex;gap:8px;flex-wrap:wrap}
-    @media (max-width:960px){
-      .app{grid-template-columns:1fr}
-      .sidebar{border-right:0;border-bottom:1px solid var(--border)}
-      .top,.section-head{flex-direction:column;align-items:flex-start}
-      .kpi,.span-6,.span-12{grid-column:span 12}
-    }
+    :root{--bg:#f7f4f8;--surface:#fff;--surface-2:#faf6f9;--border:#ead7e2;--text:#271721;--muted:#76576a;--primary:#AA0C60;--primary-soft:#f8dbe9;--danger:#b42318;--success:#2d7d46;--warning:#9b5d00;--radius:16px;--font:'Satoshi',Arial,sans-serif}
+    *{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--text);font-family:var(--font)} .hidden{display:none!important}
+    .login-wrap{min-height:100vh;display:grid;place-items:center;padding:24px}.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px}
+    .login-card{width:min(100%,460px);display:grid;gap:16px}.brand{display:flex;gap:12px;align-items:center}.logo{width:48px;height:48px;border-radius:14px;background:linear-gradient(135deg,var(--primary),#d63384);display:grid;place-items:center;color:#fff;font-weight:700}
+    h1,h2,h3,p{margin:0}.muted{color:var(--muted)} .notice,.error,.success{padding:14px 16px;border-radius:12px}.notice{background:var(--primary-soft)} .error{background:rgba(180,35,24,.08);color:var(--danger)} .success{background:rgba(45,125,70,.10);color:var(--success)}
+    .form,.form-grid{display:grid;gap:14px} .form-grid{grid-template-columns:repeat(12,1fr)} label{display:grid;gap:8px;font-weight:700} input,button,select,textarea{font:inherit} input,select,textarea{padding:14px 16px;border-radius:12px;border:1px solid var(--border);background:var(--surface-2);width:100%} textarea{min-height:88px;resize:vertical}
+    .btn{padding:14px 16px;border-radius:12px;border:1px solid var(--border);background:var(--surface);cursor:pointer;font-weight:700}.btn-primary{background:var(--primary);color:#fff;border-color:var(--primary)} .btn-small{padding:8px 12px;font-size:14px}
+    .app{display:grid;grid-template-columns:260px 1fr;min-height:100vh}.sidebar{background:var(--surface);border-right:1px solid var(--border);padding:24px;display:flex;flex-direction:column;gap:24px}.nav{display:grid;gap:8px}.nav button{text-align:left;padding:14px 16px;border-radius:12px;border:1px solid transparent;background:transparent}.nav button.active{background:var(--primary-soft);color:var(--primary)}
+    .main{padding:24px;display:grid;gap:24px}.top{display:flex;justify-content:space-between;align-items:center}.badge{padding:8px 12px;border-radius:999px;background:var(--primary-soft);color:var(--primary);font-size:12px;font-weight:700}.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:16px}.kpi{grid-column:span 4}.kpi .card{height:100%}.value{font-size:24px;font-weight:700}
+    table{width:100%;border-collapse:collapse} th,td{padding:12px 10px;border-bottom:1px solid var(--border);text-align:left;vertical-align:top} th{color:var(--muted);font-size:14px}.view.hidden{display:none}.status{padding:6px 10px;border-radius:999px;font-size:12px;font-weight:700;display:inline-flex}.approved{background:rgba(45,125,70,.12);color:var(--success)}.pending{background:rgba(155,93,0,.12);color:var(--warning)}.rejected{background:rgba(180,35,24,.12);color:var(--danger)}
+    .section-head{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:12px}.stack{display:grid;gap:16px}.span-6{grid-column:span 6}.span-12{grid-column:span 12}.actions{display:flex;gap:8px;flex-wrap:wrap}
+    @media (max-width:960px){.app{grid-template-columns:1fr}.sidebar{border-right:0;border-bottom:1px solid var(--border)}.top,.section-head{flex-direction:column;align-items:flex-start}.kpi,.span-6,.span-12{grid-column:span 12}}
   </style>
 </head>
 <body>
   <section id="loginScreen" class="login-wrap">
     <div class="card login-card">
-      <div class="brand">
-        <div class="logo">HR</div>
-        <div>
-          <h1>Listă concedii</h1>
-          <p class="muted">Pi2 PR agency</p>
-        </div>
-      </div>
+      <div class="brand"><div class="logo">HR</div><div><h1>Listă concedii</h1><p class="muted">Pi2 PR agency</p></div></div>
       <div class="notice">Versiune funcțională pentru test: employee poate crea cereri, iar admin le poate aproba sau respinge.</div>
       <div id="loginError" class="error hidden"></div>
       <form id="loginForm" class="form">
@@ -102,13 +39,7 @@
   <section id="appScreen" class="hidden">
     <div class="app">
       <aside class="sidebar">
-        <div class="brand">
-          <div class="logo">HR</div>
-          <div>
-            <h2>Listă concedii</h2>
-            <p class="muted">Pi2 PR agency</p>
-          </div>
-        </div>
+        <div class="brand"><div class="logo">HR</div><div><h2>Listă concedii</h2><p class="muted">Pi2 PR agency</p></div></div>
         <nav class="nav">
           <button class="active" data-view="dashboard">Dashboard</button>
           <button data-view="requests">Cereri</button>
@@ -123,10 +54,7 @@
         <div id="appSuccess" class="success hidden"></div>
 
         <div class="top">
-          <div>
-            <h2 id="welcomeTitle">Bun venit</h2>
-            <p class="muted" id="welcomeSubtitle"></p>
-          </div>
+          <div><h2 id="welcomeTitle">Bun venit</h2><p class="muted" id="welcomeSubtitle"></p></div>
           <div class="badge" id="roleBadge">Rol</div>
         </div>
 
@@ -142,10 +70,7 @@
 
         <section id="view-requests" class="view hidden stack">
           <div class="card" id="requestFormCard">
-            <div class="section-head">
-              <h3>Cerere nouă</h3>
-              <span class="muted">Tipul concediului este obligatoriu; evitați detalii medicale sensibile.</span>
-            </div>
+            <div class="section-head"><h3>Cerere nouă</h3><span class="muted">Tipul concediului este obligatoriu; evitați detalii medicale sensibile.</span></div>
             <form id="requestForm" class="form-grid">
               <label class="span-6">Data început<input id="startDate" type="date" required></label>
               <label class="span-6">Data final<input id="endDate" type="date" required></label>
@@ -157,69 +82,23 @@
           </div>
 
           <div class="card">
-            <div class="section-head">
-              <h3>Cereri concediu</h3>
-              <span class="muted" id="requestsHint"></span>
-            </div>
+            <div class="section-head"><h3>Cereri concediu</h3><span class="muted" id="requestsHint"></span></div>
             <table>
-              <thead>
-                <tr>
-                  <th>Angajat</th>
-                  <th>Tip</th>
-                  <th>Început</th>
-                  <th>Final</th>
-                  <th>Total zile</th>
-                  <th>Status</th>
-                  <th>Notă</th>
-                  <th>Acțiuni</th>
-                </tr>
-              </thead>
+              <thead><tr><th>Angajat</th><th>Tip</th><th>Început</th><th>Final</th><th>Total zile</th><th>Status</th><th>Notă</th><th>Acțiuni</th></tr></thead>
               <tbody id="requestsTableBody"></tbody>
             </table>
           </div>
         </section>
 
         <section id="view-employees" class="view hidden">
-          <div class="card">
-            <div class="section-head">
-              <h3>Angajați vizibili</h3>
-              <span class="muted" id="employeesHint"></span>
-            </div>
-            <table>
-              <thead>
-                <tr>
-                  <th>Nume</th>
-                  <th>Email</th>
-                  <th>Rol</th>
-                  <th>Zile/an</th>
-                  <th>Status</th>
-                </tr>
-              </thead>
-              <tbody id="employeesTableBody"></tbody>
-            </table>
-          </div>
+          <div class="card"><div class="section-head"><h3>Angajați vizibili</h3><span class="muted" id="employeesHint"></span></div><table><thead><tr><th>Nume</th><th>Email</th><th>Rol</th><th>Zile/an</th><th>Status</th></tr></thead><tbody id="employeesTableBody"></tbody></table></div>
         </section>
 
         <section id="view-balances" class="view hidden">
           <div class="card">
-            <div class="section-head">
-              <h3>Sold concedii angajați</h3>
-              <div class="actions">
-                <button class="btn btn-small" id="exportRequestsBtn">Export cereri CSV</button>
-                <button class="btn btn-small" id="exportBalancesBtn">Export solduri CSV</button>
-              </div>
-            </div>
+            <div class="section-head"><h3>Sold concedii angajați</h3><div class="actions"><button class="btn btn-small" id="exportRequestsBtn">Export cereri CSV</button><button class="btn btn-small" id="exportBalancesBtn">Export solduri CSV</button></div></div>
             <table>
-              <thead>
-                <tr>
-                  <th>Nume</th>
-                  <th>Email</th>
-                  <th>Total/an</th>
-                  <th>Aprobate</th>
-                  <th>În așteptare</th>
-                  <th>Rămase</th>
-                </tr>
-              </thead>
+              <thead><tr><th>Nume</th><th>Email</th><th>Total/an</th><th>Aprobate</th><th>În așteptare</th><th>Rămase</th></tr></thead>
               <tbody id="balancesTableBody"></tbody>
             </table>
           </div>
@@ -238,12 +117,7 @@
 
     let profile = null, requests = [], employees = [], leaveTypes = [], balances = []
 
-    const FIXED_LEAVE_TYPES = [
-      'Concediu de odihnă',
-      'Medical',
-      'Invoire',
-      'Altele'
-    ]
+    const FIXED_LEAVE_TYPES = ['Concediu de odihnă', 'Medical', 'Invoire', 'Altele']
 
     const loginScreen = document.getElementById('loginScreen')
     const appScreen = document.getElementById('appScreen')
@@ -262,15 +136,30 @@
 
     const statusBadge = s => `<span class="status ${s==='approved'?'approved':s==='rejected'?'rejected':'pending'}">${s || '-'}</span>`
     const formatNumber = n => Number.isFinite(n) ? (Math.round(n * 10) / 10).toString() : '0'
-
-    function normalizeName(name){
-      return String(name || '').trim().toLowerCase()
-    }
+    const normalizeName = name => String(name || '').trim().toLowerCase()
 
     function countsAgainstBalance(leaveTypeId){
       const leaveType = leaveTypes.find(t => t.id === leaveTypeId)
       const name = normalizeName(leaveType?.name)
       return name === 'concediu de odihnă' || name === 'concediu de odihna'
+    }
+
+    async function ensureFixedLeaveTypes(){
+      const existingNames = new Set(leaveTypes.map(t => normalizeName(t.name)))
+      const missing = FIXED_LEAVE_TYPES.filter(name => !existingNames.has(normalizeName(name)))
+      if(!missing.length) return
+
+      const rowsToInsert = missing.map(name => ({
+        name,
+        counts_against_balance: normalizeName(name) === 'concediu de odihnă',
+        requires_document: normalizeName(name) === 'medical',
+        is_medical: normalizeName(name) === 'medical'
+      }))
+
+      const { error } = await supabase.from('leave_types').insert(rowsToInsert)
+      if(error) {
+        console.error('Nu am putut crea tipurile lipsă:', error)
+      }
     }
 
     function computeApprovedDays(rows, employeeId = null){
@@ -306,9 +195,9 @@
 
     function renderLeaveTypes(){
       const sel = document.getElementById('leaveTypeSelect')
-      const filtered = leaveTypes.filter(t => FIXED_LEAVE_TYPES.includes(t.name))
-      sel.innerHTML = filtered.length
-        ? filtered.map(t => `<option value="${t.id}">${t.name}</option>`).join('')
+      const ordered = FIXED_LEAVE_TYPES.map(name => leaveTypes.find(t => normalizeName(t.name) === normalizeName(name))).filter(Boolean)
+      sel.innerHTML = ordered.length
+        ? ordered.map(t => `<option value="${t.id}">${t.name}</option>`).join('')
         : '<option value="">Nu există tipurile necesare în baza de date</option>'
     }
 
@@ -330,21 +219,10 @@
     function computeBalances(rows, employeesList){
       return employeesList.map(emp => {
         const empRows = rows.filter(r => r.employee_id === emp.id)
-        const approved = empRows.reduce((sum, r) => {
-          return r.status === 'approved' && countsAgainstBalance(r.leave_type_id) ? sum + Number(r.total_days || 0) : sum
-        }, 0)
-        const pending = empRows.reduce((sum, r) => {
-          return r.status === 'pending' && countsAgainstBalance(r.leave_type_id) ? sum + Number(r.total_days || 0) : sum
-        }, 0)
+        const approved = empRows.reduce((sum, r) => r.status === 'approved' && countsAgainstBalance(r.leave_type_id) ? sum + Number(r.total_days || 0) : sum, 0)
+        const pending = empRows.reduce((sum, r) => r.status === 'pending' && countsAgainstBalance(r.leave_type_id) ? sum + Number(r.total_days || 0) : sum, 0)
         const annual = Number(emp.annual_allowance || 0)
-        return {
-          full_name: emp.full_name,
-          email: emp.email,
-          annual_allowance: annual,
-          approved_days: approved,
-          pending_days: pending,
-          remaining_days: Math.max(annual - approved, 0)
-        }
+        return { full_name: emp.full_name, email: emp.email, annual_allowance: annual, approved_days: approved, pending_days: pending, remaining_days: Math.max(annual - approved, 0) }
       })
     }
 
@@ -359,11 +237,7 @@
       const { data: { user }, error: uErr } = await supabase.auth.getUser()
       if(uErr) throw uErr
       if(!user) return null
-      const { data, error } = await supabase
-        .from('employees')
-        .select('id, full_name, email, role, annual_allowance, is_active')
-        .eq('auth_user_id', user.id)
-        .single()
+      const { data, error } = await supabase.from('employees').select('id, full_name, email, role, annual_allowance, is_active').eq('auth_user_id', user.id).single()
       if(error) throw error
       profile = data
       profile.auth_user_id = user.id
@@ -371,21 +245,19 @@
     }
 
     async function loadLeaveTypes(){
-      const { data, error } = await supabase
-        .from('leave_types')
-        .select('id, name, counts_against_balance, requires_document, is_medical')
-        .order('name')
+      let { data, error } = await supabase.from('leave_types').select('id, name, counts_against_balance, requires_document, is_medical').order('name')
       if(error) throw error
       leaveTypes = data || []
+      await ensureFixedLeaveTypes()
+      const secondLoad = await supabase.from('leave_types').select('id, name, counts_against_balance, requires_document, is_medical').order('name')
+      if(secondLoad.error) throw secondLoad.error
+      leaveTypes = secondLoad.data || []
       renderLeaveTypes()
     }
 
     async function loadEmployees(){
       if(profile.role === 'admin'){
-        const { data, error } = await supabase
-          .from('employees')
-          .select('id, full_name, email, role, annual_allowance, is_active')
-          .order('full_name')
+        const { data, error } = await supabase.from('employees').select('id, full_name, email, role, annual_allowance, is_active').order('full_name')
         if(error) throw error
         employees = data || []
       } else {
@@ -396,18 +268,11 @@
 
     async function loadRequests(){
       if(profile.role === 'admin'){
-        const { data, error } = await supabase
-          .from('leave_requests')
-          .select('id, employee_id, leave_type_id, start_date, end_date, total_days, status, note, created_at, employee:employees!leave_requests_employee_id_fkey(full_name)')
-          .order('created_at', { ascending: false })
+        const { data, error } = await supabase.from('leave_requests').select('id, employee_id, leave_type_id, start_date, end_date, total_days, status, note, created_at, employee:employees!leave_requests_employee_id_fkey(full_name)').order('created_at', { ascending: false })
         if(error) throw error
         requests = data || []
       } else {
-        const { data, error } = await supabase
-          .from('leave_requests')
-          .select('id, employee_id, leave_type_id, start_date, end_date, total_days, status, note, created_at')
-          .eq('employee_id', profile.id)
-          .order('created_at', { ascending: false })
+        const { data, error } = await supabase.from('leave_requests').select('id, employee_id, leave_type_id, start_date, end_date, total_days, status, note, created_at').eq('employee_id', profile.id).order('created_at', { ascending: false })
         if(error) throw error
         requests = data || []
       }
@@ -433,9 +298,9 @@
       loginScreen.classList.add('hidden')
       appScreen.classList.remove('hidden')
       renderProfile()
-      try {
+      try{
         await refreshAll()
-      } catch(err) {
+      }catch(err){
         console.error(err)
         show('appError', 'Eroare la încărcarea datelor: ' + (err.message || JSON.stringify(err)))
       }
@@ -447,10 +312,7 @@
       const email = document.getElementById('email').value.trim()
       const password = document.getElementById('password').value
       const { error } = await supabase.auth.signInWithPassword({ email, password })
-      if(error){
-        show('loginError', error.message)
-        return
-      }
+      if(error){ show('loginError', error.message); return }
       await boot()
     })
 
@@ -479,8 +341,7 @@
 
     document.getElementById('requestForm').addEventListener('submit', async e => {
       e.preventDefault()
-      hide('appError')
-      hide('appSuccess')
+      hide('appError'); hide('appSuccess')
       try {
         const payload = {
           employee_id: profile.id,
@@ -497,15 +358,14 @@
         await refreshAll()
       } catch(err) {
         console.error(err)
-        show('appError', 'Nu am putut salva cererea: ' + (err.message || JSON.stringify(err)) + ' — verifică policy INSERT pe leave_requests pentru employee_id = profilul logat.')
+        show('appError', 'Nu am putut salva cererea: ' + (err.message || JSON.stringify(err)) + ' — verifică policy INSERT pe leave_requests și leave_types.')
       }
     })
 
     document.getElementById('requestsTableBody').addEventListener('click', async e => {
       const btn = e.target.closest('[data-action]')
       if(!btn) return
-      hide('appError')
-      hide('appSuccess')
+      hide('appError'); hide('appSuccess')
       try {
         const status = btn.dataset.action === 'approve' ? 'approved' : 'rejected'
         const { error } = await supabase.from('leave_requests').update({ status }).eq('id', btn.dataset.id)
@@ -519,15 +379,9 @@
     })
 
     function downloadCSV(filename, rows){
-      if(!rows.length){
-        show('appError', 'Nu există date pentru export.')
-        return
-      }
+      if(!rows.length){ show('appError', 'Nu există date pentru export.'); return }
       const headers = Object.keys(rows[0])
-      const csv = [
-        headers.join(','),
-        ...rows.map(row => headers.map(h => `"${String(row[h] ?? '').replace(/"/g, '""')}"`).join(','))
-      ].join('\n')
+      const csv = [headers.join(','), ...rows.map(row => headers.map(h => `"${String(row[h] ?? '').replace(/"/g, '""')}"`).join(','))].join('\n')
       const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' })
       const link = document.createElement('a')
       link.href = URL.createObjectURL(blob)
@@ -537,28 +391,13 @@
 
     document.getElementById('exportRequestsBtn')?.addEventListener('click', () => {
       if(profile.role !== 'admin') return
-      const rows = requests.map(r => ({
-        angajat: r.employee?.full_name || profile.full_name,
-        tip_concediu: leaveTypes.find(t => t.id === r.leave_type_id)?.name || '',
-        inceput: r.start_date || '',
-        final: r.end_date || '',
-        total_zile: r.total_days || '',
-        status: r.status || '',
-        nota: r.note || ''
-      }))
+      const rows = requests.map(r => ({ angajat: r.employee?.full_name || profile.full_name, tip_concediu: leaveTypes.find(t => t.id === r.leave_type_id)?.name || '', inceput: r.start_date || '', final: r.end_date || '', total_zile: r.total_days || '', status: r.status || '', nota: r.note || '' }))
       downloadCSV('cereri-concediu.csv', rows)
     })
 
     document.getElementById('exportBalancesBtn')?.addEventListener('click', () => {
       if(profile.role !== 'admin') return
-      const rows = balances.map(b => ({
-        nume: b.full_name,
-        email: b.email,
-        total_an: b.annual_allowance,
-        aprobate: b.approved_days,
-        in_asteptare: b.pending_days,
-        ramase: b.remaining_days
-      }))
+      const rows = balances.map(b => ({ nume: b.full_name, email: b.email, total_an: b.annual_allowance, aprobate: b.approved_days, in_asteptare: b.pending_days, ramase: b.remaining_days }))
       downloadCSV('solduri-concediu.csv', rows)
     })
 
