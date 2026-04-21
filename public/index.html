@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ro">
 <head>
@@ -40,82 +41,32 @@
     .form-grid{grid-template-columns:repeat(12,1fr)}
     label{display:grid;gap:8px;font-weight:700}
     input,button,select,textarea{font:inherit}
-    input,select,textarea{
-      padding:14px 16px;
-      border-radius:12px;
-      border:1px solid var(--border);
-      background:var(--surface-2);
-      width:100%
-    }
+    input,select,textarea{padding:14px 16px;border-radius:12px;border:1px solid var(--border);background:var(--surface-2);width:100%}
     textarea{min-height:88px;resize:vertical}
-    .btn{
-      padding:14px 16px;
-      border-radius:12px;
-      border:1px solid var(--border);
-      background:var(--surface);
-      cursor:pointer;
-      font-weight:700
-    }
+    .btn{padding:14px 16px;border-radius:12px;border:1px solid var(--border);background:var(--surface);cursor:pointer;font-weight:700}
     .btn-primary{background:var(--primary);color:#fff;border-color:var(--primary)}
     .btn-small{padding:8px 12px;font-size:14px}
     .app{display:grid;grid-template-columns:260px 1fr;min-height:100vh}
-    .sidebar{
-      background:var(--surface);
-      border-right:1px solid var(--border);
-      padding:24px;
-      display:flex;
-      flex-direction:column;
-      gap:24px
-    }
+    .sidebar{background:var(--surface);border-right:1px solid var(--border);padding:24px;display:flex;flex-direction:column;gap:24px}
     .nav{display:grid;gap:8px}
-    .nav button{
-      text-align:left;
-      padding:14px 16px;
-      border-radius:12px;
-      border:1px solid transparent;
-      background:transparent
-    }
+    .nav button{text-align:left;padding:14px 16px;border-radius:12px;border:1px solid transparent;background:transparent}
     .nav button.active{background:var(--primary-soft);color:var(--primary)}
     .main{padding:24px;display:grid;gap:24px}
     .top{display:flex;justify-content:space-between;align-items:center}
-    .badge{
-      padding:8px 12px;
-      border-radius:999px;
-      background:var(--primary-soft);
-      color:var(--primary);
-      font-size:12px;
-      font-weight:700
-    }
+    .badge{padding:8px 12px;border-radius:999px;background:var(--primary-soft);color:var(--primary);font-size:12px;font-weight:700}
     .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:16px}
     .kpi{grid-column:span 4}
     .kpi .card{height:100%}
     .value{font-size:24px;font-weight:700}
     table{width:100%;border-collapse:collapse}
-    th,td{
-      padding:12px 10px;
-      border-bottom:1px solid var(--border);
-      text-align:left;
-      vertical-align:top
-    }
+    th,td{padding:12px 10px;border-bottom:1px solid var(--border);text-align:left;vertical-align:top}
     th{color:var(--muted);font-size:14px}
     .view.hidden{display:none}
-    .status{
-      padding:6px 10px;
-      border-radius:999px;
-      font-size:12px;
-      font-weight:700;
-      display:inline-flex
-    }
+    .status{padding:6px 10px;border-radius:999px;font-size:12px;font-weight:700;display:inline-flex}
     .approved{background:rgba(45,125,70,.12);color:var(--success)}
     .pending{background:rgba(155,93,0,.12);color:var(--warning)}
     .rejected{background:rgba(180,35,24,.12);color:var(--danger)}
-    .section-head{
-      display:flex;
-      justify-content:space-between;
-      gap:16px;
-      align-items:center;
-      margin-bottom:12px
-    }
+    .section-head{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:12px}
     .stack{display:grid;gap:16px}
     .span-6{grid-column:span 6}
     .span-12{grid-column:span 12}
@@ -129,7 +80,6 @@
   </style>
 </head>
 <body>
-  <!-- Ecran login -->
   <section id="loginScreen" class="login-wrap">
     <div class="card login-card">
       <div class="brand">
@@ -139,9 +89,7 @@
           <p class="muted">Pi2 PR agency</p>
         </div>
       </div>
-      <div class="notice">
-        Versiune funcțională pentru test: employee poate crea cereri, iar admin le poate aproba sau respinge.
-      </div>
+      <div class="notice">Versiune funcțională pentru test: employee poate crea cereri, iar admin le poate aproba sau respinge.</div>
       <div id="loginError" class="error hidden"></div>
       <form id="loginForm" class="form">
         <label>Email<input id="email" type="email" required></label>
@@ -151,7 +99,6 @@
     </div>
   </section>
 
-  <!-- Ecran aplicație -->
   <section id="appScreen" class="hidden">
     <div class="app">
       <aside class="sidebar">
@@ -183,50 +130,21 @@
           <div class="badge" id="roleBadge">Rol</div>
         </div>
 
-        <!-- Dashboard -->
         <section id="view-dashboard" class="view">
           <div class="grid">
-            <div class="kpi">
-              <div class="card">
-                <div class="muted">Utilizator logat</div>
-                <div class="value" id="kpiUser">-</div>
-              </div>
-            </div>
-            <div class="kpi">
-              <div class="card">
-                <div class="muted">Rol</div>
-                <div class="value" id="kpiRole">-</div>
-              </div>
-            </div>
-            <div class="kpi">
-              <div class="card">
-                <div class="muted">Total cereri încărcate</div>
-                <div class="value" id="kpiRequests">0</div>
-              </div>
-            </div>
-            <div class="kpi">
-              <div class="card">
-                <div class="muted">Zile aprobate</div>
-                <div class="value" id="kpiApprovedDays">0</div>
-              </div>
-            </div>
-            <div class="kpi">
-              <div class="card">
-                <div class="muted">Sold zile rămase</div>
-                <div class="value" id="kpiBalance">0</div>
-              </div>
-            </div>
+            <div class="kpi"><div class="card"><div class="muted">Utilizator logat</div><div class="value" id="kpiUser">-</div></div></div>
+            <div class="kpi"><div class="card"><div class="muted">Rol</div><div class="value" id="kpiRole">-</div></div></div>
+            <div class="kpi"><div class="card"><div class="muted">Total cereri încărcate</div><div class="value" id="kpiRequests">0</div></div></div>
+            <div class="kpi"><div class="card"><div class="muted">Zile aprobate</div><div class="value" id="kpiApprovedDays">0</div></div></div>
+            <div class="kpi"><div class="card"><div class="muted">Sold zile rămase</div><div class="value" id="kpiBalance">0</div></div></div>
           </div>
         </section>
 
-        <!-- Cereri -->
         <section id="view-requests" class="view hidden stack">
           <div class="card" id="requestFormCard">
             <div class="section-head">
               <h3>Cerere nouă</h3>
-              <span class="muted">
-                Tipul concediului este obligatoriu; evitați detalii medicale sensibile.
-              </span>
+              <span class="muted">Tipul concediului este obligatoriu; evitați detalii medicale sensibile.</span>
             </div>
             <form id="requestForm" class="form-grid">
               <label class="span-6">Data început<input id="startDate" type="date" required></label>
@@ -234,9 +152,7 @@
               <label class="span-6">Tip concediu<select id="leaveTypeSelect" required></select></label>
               <label class="span-6">Total zile<input id="totalDays" type="number" step="0.5" min="0.5" required></label>
               <label class="span-12">Notă<textarea id="requestNote" placeholder="Detalii administrative opționale"></textarea></label>
-              <div class="span-12">
-                <button class="btn btn-primary" type="submit">Trimite cererea</button>
-              </div>
+              <div class="span-12"><button class="btn btn-primary" type="submit">Trimite cererea</button></div>
             </form>
           </div>
 
@@ -263,7 +179,6 @@
           </div>
         </section>
 
-        <!-- Angajați -->
         <section id="view-employees" class="view hidden">
           <div class="card">
             <div class="section-head">
@@ -285,7 +200,6 @@
           </div>
         </section>
 
-        <!-- Solduri -->
         <section id="view-balances" class="view hidden">
           <div class="card">
             <div class="section-head">
@@ -325,8 +239,7 @@
     let profile = null, requests = [], employees = [], leaveTypes = [], balances = []
 
     const loginScreen = document.getElementById('loginScreen')
-    const appScreen   = document.getElementById('appScreen')
-    const loginError  = document.getElementById('loginError')
+    const appScreen = document.getElementById('appScreen')
 
     const show = (id, msg) => {
       const e = document.getElementById(id)
@@ -340,11 +253,8 @@
       e.classList.add('hidden')
     }
 
-    const statusBadge = s =>
-      `<span class="status ${s==='approved'?'approved':s==='rejected'?'rejected':'pending'}">${s||'-'}</span>`
-
-    const formatNumber = n =>
-      Number.isFinite(n) ? (Math.round(n*10)/10).toString() : '0'
+    const statusBadge = s => `<span class="status ${s==='approved'?'approved':s==='rejected'?'rejected':'pending'}">${s || '-'}</span>`
+    const formatNumber = n => Number.isFinite(n) ? (Math.round(n * 10) / 10).toString() : '0'
 
     function computeApprovedDays(rows, employeeId = null){
       const typeMap = new Map(leaveTypes.map(t => [t.id, t]))
@@ -358,39 +268,27 @@
 
     function updateBalanceKPIs(){
       const approvedDays = computeApprovedDays(requests, profile.id)
-      const allowance    = Number(profile.annual_allowance || 0)
-      const balance      = profile.role === 'admin'
-        ? approvedDays
-        : Math.max(allowance - approvedDays, 0)
-
+      const allowance = Number(profile.annual_allowance || 0)
+      const balance = profile.role === 'admin' ? approvedDays : Math.max(allowance - approvedDays, 0)
       document.getElementById('kpiApprovedDays').textContent = formatNumber(approvedDays)
-      document.getElementById('kpiBalance').textContent = profile.role === 'admin'
-        ? '—'
-        : formatNumber(balance)
+      document.getElementById('kpiBalance').textContent = profile.role === 'admin' ? '—' : formatNumber(balance)
     }
 
     function calcDays(a, b){
       if(!a || !b) return ''
       const start = new Date(a), end = new Date(b)
       if(end < start) return ''
-      const ms = end - start
-      return (ms / 86400000) + 1
+      return ((end - start) / 86400000) + 1
     }
 
     function renderProfile(){
-      document.getElementById('welcomeTitle').textContent    = `Bun venit, ${profile.full_name}`
+      document.getElementById('welcomeTitle').textContent = `Bun venit, ${profile.full_name}`
       document.getElementById('welcomeSubtitle').textContent = `Ai intrat cu ${profile.email}`
-      document.getElementById('roleBadge').textContent       = `Rol: ${profile.role}`
-      document.getElementById('kpiUser').textContent         = profile.full_name
-      document.getElementById('kpiRole').textContent         = profile.role
-      document.getElementById('requestsHint').textContent    =
-        profile.role === 'admin'
-          ? 'Vezi și administrezi toate cererile'
-          : 'Vezi și trimiți cererile tale'
-      document.getElementById('employeesHint').textContent   =
-        profile.role === 'admin'
-          ? 'Vezi toți angajații'
-          : 'Vezi doar profilul tău'
+      document.getElementById('roleBadge').textContent = `Rol: ${profile.role}`
+      document.getElementById('kpiUser').textContent = profile.full_name
+      document.getElementById('kpiRole').textContent = profile.role
+      document.getElementById('requestsHint').textContent = profile.role === 'admin' ? 'Vezi și administrezi toate cererile' : 'Vezi și trimiți cererile tale'
+      document.getElementById('employeesHint').textContent = profile.role === 'admin' ? 'Vezi toți angajații' : 'Vezi doar profilul tău'
     }
 
     function renderLeaveTypes(){
@@ -402,9 +300,7 @@
 
     function renderEmployeesTable(rows){
       document.getElementById('employeesTableBody').innerHTML = rows.length
-        ? rows.map(emp =>
-            `<tr><td>${emp.full_name}</td><td>${emp.email}</td><td>${emp.role}</td><td>${emp.annual_allowance ?? '-'}</td><td>${emp.is_active?'Activ':'Inactiv'}</td></tr>`
-          ).join('')
+        ? rows.map(emp => `<tr><td>${emp.full_name}</td><td>${emp.email}</td><td>${emp.role}</td><td>${emp.annual_allowance ?? '-'}</td><td>${emp.is_active ? 'Activ' : 'Inactiv'}</td></tr>`).join('')
         : '<tr><td colspan="5">Nu există angajați vizibili.</td></tr>'
     }
 
@@ -413,25 +309,7 @@
       document.getElementById('kpiRequests').textContent = requests.length
       updateBalanceKPIs()
       document.getElementById('requestsTableBody').innerHTML = requests.length
-        ? requests.map(r =>
-            `<tr>
-              <td>${r.employee?.full_name || profile.full_name}</td>
-              <td>${typeMap.get(r.leave_type_id) || '-'}</td>
-              <td>${r.start_date || '-'}</td>
-              <td>${r.end_date || '-'}</td>
-              <td>${r.total_days ?? '-'}</td>
-              <td>${statusBadge(r.status)}</td>
-              <td>${r.note || '-'}</td>
-              <td>${
-                profile.role === 'admin' && r.status === 'pending'
-                  ? `<div class="actions">
-                      <button class="btn btn-small" data-action="approve" data-id="${r.id}">Aprobă</button>
-                      <button class="btn btn-small" data-action="reject" data-id="${r.id}">Respinge</button>
-                     </div>`
-                  : '-'
-              }</td>
-            </tr>`
-          ).join('')
+        ? requests.map(r => `<tr><td>${r.employee?.full_name || profile.full_name}</td><td>${typeMap.get(r.leave_type_id) || '-'}</td><td>${r.start_date || '-'}</td><td>${r.end_date || '-'}</td><td>${r.total_days ?? '-'}</td><td>${statusBadge(r.status)}</td><td>${r.note || '-'}</td><td>${profile.role === 'admin' && r.status === 'pending' ? `<div class="actions"><button class="btn btn-small" data-action="approve" data-id="${r.id}">Aprobă</button><button class="btn btn-small" data-action="reject" data-id="${r.id}">Respinge</button></div>` : '-'}</td></tr>`).join('')
         : '<tr><td colspan="8">Nu există încă cereri.</td></tr>'
     }
 
@@ -439,30 +317,22 @@
       const typeMap = new Map(leaveTypesList.map(t => [t.id, t]))
       return employeesList.map(emp => {
         const empRows = rows.filter(r => r.employee_id === emp.id)
-
         const approved = empRows.reduce((sum, r) => {
           const type = typeMap.get(r.leave_type_id)
-          return r.status === 'approved' && type?.counts_against_balance
-            ? sum + Number(r.total_days || 0)
-            : sum
+          return r.status === 'approved' && type?.counts_against_balance ? sum + Number(r.total_days || 0) : sum
         }, 0)
-
         const pending = empRows.reduce((sum, r) => {
           const type = typeMap.get(r.leave_type_id)
-          return r.status === 'pending' && type?.counts_against_balance
-            ? sum + Number(r.total_days || 0)
-            : sum
+          return r.status === 'pending' && type?.counts_against_balance ? sum + Number(r.total_days || 0) : sum
         }, 0)
-
         const annual = Number(emp.annual_allowance || 0)
-
         return {
-          full_name:       emp.full_name,
-          email:           emp.email,
+          full_name: emp.full_name,
+          email: emp.email,
           annual_allowance: annual,
-          approved_days:   approved,
-          pending_days:    pending,
-          remaining_days:  Math.max(annual - approved, 0)
+          approved_days: approved,
+          pending_days: pending,
+          remaining_days: Math.max(annual - approved, 0)
         }
       })
     }
@@ -470,24 +340,15 @@
     function renderBalancesTable(){
       const body = document.getElementById('balancesTableBody')
       body.innerHTML = balances.length
-        ? balances.map(b =>
-            `<tr>
-              <td>${b.full_name}</td>
-              <td>${b.email}</td>
-              <td>${formatNumber(b.annual_allowance)}</td>
-              <td>${formatNumber(b.approved_days)}</td>
-              <td>${formatNumber(b.pending_days)}</td>
-              <td>${formatNumber(b.remaining_days)}</td>
-            </tr>`
-          ).join('')
+        ? balances.map(b => `<tr><td>${b.full_name}</td><td>${b.email}</td><td>${formatNumber(b.annual_allowance)}</td><td>${formatNumber(b.approved_days)}</td><td>${formatNumber(b.pending_days)}</td><td>${formatNumber(b.remaining_days)}</td></tr>`).join('')
         : '<tr><td colspan="6">Nu există date disponibile.</td></tr>'
     }
 
     async function loadProfile(){
-      const {data:{user}, error:uErr} = await supabase.auth.getUser()
+      const { data: { user }, error: uErr } = await supabase.auth.getUser()
       if(uErr) throw uErr
       if(!user) return null
-      const {data, error} = await supabase
+      const { data, error } = await supabase
         .from('employees')
         .select('id, full_name, email, role, annual_allowance, is_active')
         .eq('auth_user_id', user.id)
@@ -499,7 +360,7 @@
     }
 
     async function loadLeaveTypes(){
-      const {data, error} = await supabase
+      const { data, error } = await supabase
         .from('leave_types')
         .select('id, name, counts_against_balance, requires_document, is_medical')
         .order('name')
@@ -510,7 +371,7 @@
 
     async function loadEmployees(){
       if(profile.role === 'admin'){
-        const {data, error} = await supabase
+        const { data, error } = await supabase
           .from('employees')
           .select('id, full_name, email, role, annual_allowance, is_active')
           .order('full_name')
@@ -524,20 +385,18 @@
 
     async function loadRequests(){
       if(profile.role === 'admin'){
-        const {data, error} = await supabase
+        const { data, error } = await supabase
           .from('leave_requests')
-          .select(
-            'id, employee_id, leave_type_id, start_date, end_date, total_days, status, note, created_at, employee:employees!leave_requests_employee_id_fkey(full_name)'
-          )
-          .order('created_at', {ascending:false})
+          .select('id, employee_id, leave_type_id, start_date, end_date, total_days, status, note, created_at, employee:employees!leave_requests_employee_id_fkey(full_name)')
+          .order('created_at', { ascending: false })
         if(error) throw error
         requests = data || []
       } else {
-        const {data, error} = await supabase
+        const { data, error } = await supabase
           .from('leave_requests')
           .select('id, employee_id, leave_type_id, start_date, end_date, total_days, status, note, created_at')
           .eq('employee_id', profile.id)
-          .order('created_at', {ascending:false})
+          .order('created_at', { ascending: false })
         if(error) throw error
         requests = data || []
       }
@@ -557,26 +416,26 @@
       hide('appError')
       await loadProfile()
       if(!profile){
-        show('loginError','Contul există în Auth, dar nu a fost găsit în employees.')
+        show('loginError', 'Contul există în Auth, dar nu a fost găsit în employees.')
         return
       }
       loginScreen.classList.add('hidden')
       appScreen.classList.remove('hidden')
       renderProfile()
-      try{
+      try {
         await refreshAll()
-      }catch(err){
+      } catch(err) {
         console.error(err)
-        show('appError','Eroare la încărcarea datelor: '+(err.message||JSON.stringify(err)))
+        show('appError', 'Eroare la încărcarea datelor: ' + (err.message || JSON.stringify(err)))
       }
     }
 
     document.getElementById('loginForm').addEventListener('submit', async e => {
       e.preventDefault()
       hide('loginError')
-      const email    = document.getElementById('email').value.trim()
+      const email = document.getElementById('email').value.trim()
       const password = document.getElementById('password').value
-      const {error}  = await supabase.auth.signInWithPassword({email,password})
+      const { error } = await supabase.auth.signInWithPassword({ email, password })
       if(error){
         show('loginError', error.message)
         return
@@ -590,28 +449,20 @@
       loginScreen.classList.remove('hidden')
     })
 
-    document.querySelectorAll('[data-view]').forEach(btn =>
-      btn.addEventListener('click', () => {
-        document.querySelectorAll('[data-view]').forEach(b => b.classList.remove('active'))
-        btn.classList.add('active')
-        document.querySelectorAll('.view').forEach(v => v.classList.add('hidden'))
-        document.getElementById('view-'+btn.dataset.view).classList.remove('hidden')
-      })
-    )
+    document.querySelectorAll('[data-view]').forEach(btn => btn.addEventListener('click', () => {
+      document.querySelectorAll('[data-view]').forEach(b => b.classList.remove('active'))
+      btn.classList.add('active')
+      document.querySelectorAll('.view').forEach(v => v.classList.add('hidden'))
+      document.getElementById('view-' + btn.dataset.view).classList.remove('hidden')
+    }))
 
     document.getElementById('startDate').addEventListener('change', () => {
-      const v = calcDays(
-        document.getElementById('startDate').value,
-        document.getElementById('endDate').value
-      )
+      const v = calcDays(document.getElementById('startDate').value, document.getElementById('endDate').value)
       if(v) document.getElementById('totalDays').value = v
     })
 
     document.getElementById('endDate').addEventListener('change', () => {
-      const v = calcDays(
-        document.getElementById('startDate').value,
-        document.getElementById('endDate').value
-      )
+      const v = calcDays(document.getElementById('startDate').value, document.getElementById('endDate').value)
       if(v) document.getElementById('totalDays').value = v
     })
 
@@ -619,23 +470,23 @@
       e.preventDefault()
       hide('appError')
       hide('appSuccess')
-      try{
+      try {
         const payload = {
-          employee_id:   profile.id,
+          employee_id: profile.id,
           leave_type_id: document.getElementById('leaveTypeSelect').value || null,
-          start_date:    document.getElementById('startDate').value,
-          end_date:      document.getElementById('endDate').value,
-          total_days:    Number(document.getElementById('totalDays').value),
-          note:          document.getElementById('requestNote').value.trim() || null
+          start_date: document.getElementById('startDate').value,
+          end_date: document.getElementById('endDate').value,
+          total_days: Number(document.getElementById('totalDays').value),
+          note: document.getElementById('requestNote').value.trim() || null
         }
-        const {error} = await supabase.from('leave_requests').insert(payload)
+        const { error } = await supabase.from('leave_requests').insert(payload)
         if(error) throw error
         document.getElementById('requestForm').reset()
-        show('appSuccess','Cererea a fost trimisă cu succes.')
+        show('appSuccess', 'Cererea a fost trimisă cu succes.')
         await refreshAll()
-      }catch(err){
+      } catch(err) {
         console.error(err)
-        show('appError','Nu am putut salva cererea: '+(err.message||JSON.stringify(err))+' — verifică policy INSERT pe leave_requests pentru employee_id = profilul logat.')
+        show('appError', 'Nu am putut salva cererea: ' + (err.message || JSON.stringify(err)) + ' — verifică policy INSERT pe leave_requests pentru employee_id = profilul logat.')
       }
     })
 
@@ -644,42 +495,29 @@
       if(!btn) return
       hide('appError')
       hide('appSuccess')
-      try{
+      try {
         const status = btn.dataset.action === 'approve' ? 'approved' : 'rejected'
-        const {error} = await supabase
-          .from('leave_requests')
-          .update({status})
-          .eq('id', btn.dataset.id)
+        const { error } = await supabase.from('leave_requests').update({ status }).eq('id', btn.dataset.id)
         if(error) throw error
-        show(
-          'appSuccess',
-          status === 'approved'
-            ? 'Cererea a fost aprobată.'
-            : 'Cererea a fost respinsă.'
-        )
+        show('appSuccess', status === 'approved' ? 'Cererea a fost aprobată.' : 'Cererea a fost respinsă.')
         await refreshAll()
-      }catch(err){
+      } catch(err) {
         console.error(err)
-        show('appError','Nu am putut actualiza cererea: '+(err.message||JSON.stringify(err)))
+        show('appError', 'Nu am putut actualiza cererea: ' + (err.message || JSON.stringify(err)))
       }
     })
 
     function downloadCSV(filename, rows){
       if(!rows.length){
-        show('appError','Nu există date pentru export.')
+        show('appError', 'Nu există date pentru export.')
         return
       }
       const headers = Object.keys(rows[0])
       const csv = [
         headers.join(','),
-        ...rows.map(row =>
-          headers.map(h => {
-            const value = row[h] ?? ''
-            return `"${String(value).replace(/"/g,'""')}"`
-          }).join(',')
-        )
+        ...rows.map(row => headers.map(h => `"${String(row[h] ?? '').replace(/"/g, '""')}"`).join(','))
       ].join('\n')
-      const blob = new Blob([csv], {type:'text/csv;charset=utf-8;'})
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' })
       const link = document.createElement('a')
       link.href = URL.createObjectURL(blob)
       link.download = filename
@@ -689,13 +527,13 @@
     document.getElementById('exportRequestsBtn')?.addEventListener('click', () => {
       if(profile.role !== 'admin') return
       const rows = requests.map(r => ({
-        angajat:      r.employee?.full_name || profile.full_name,
+        angajat: r.employee?.full_name || profile.full_name,
         tip_concediu: leaveTypes.find(t => t.id === r.leave_type_id)?.name || '',
-        inceput:      r.start_date || '',
-        final:        r.end_date || '',
-        total_zile:   r.total_days || '',
-        status:       r.status || '',
-        nota:         r.note || ''
+        inceput: r.start_date || '',
+        final: r.end_date || '',
+        total_zile: r.total_days || '',
+        status: r.status || '',
+        nota: r.note || ''
       }))
       downloadCSV('cereri-concediu.csv', rows)
     })
@@ -703,17 +541,17 @@
     document.getElementById('exportBalancesBtn')?.addEventListener('click', () => {
       if(profile.role !== 'admin') return
       const rows = balances.map(b => ({
-        nume:         b.full_name,
-        email:        b.email,
-        total_an:     b.annual_allowance,
-        aprobate:     b.approved_days,
+        nume: b.full_name,
+        email: b.email,
+        total_an: b.annual_allowance,
+        aprobate: b.approved_days,
         in_asteptare: b.pending_days,
-        ramase:       b.remaining_days
+        ramase: b.remaining_days
       }))
       downloadCSV('solduri-concediu.csv', rows)
     })
 
-    const {data:{session}} = await supabase.auth.getSession()
+    const { data: { session } } = await supabase.auth.getSession()
     if(session) await boot()
   </script>
 </body>
