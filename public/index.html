@@ -238,6 +238,13 @@
 
     let profile = null, requests = [], employees = [], leaveTypes = [], balances = []
 
+    const FIXED_LEAVE_TYPES = [
+      'Concediu de odihnă',
+      'Medical',
+      'Invoire',
+      'Altele'
+    ]
+
     const loginScreen = document.getElementById('loginScreen')
     const appScreen = document.getElementById('appScreen')
 
@@ -256,14 +263,20 @@
     const statusBadge = s => `<span class="status ${s==='approved'?'approved':s==='rejected'?'rejected':'pending'}">${s || '-'}</span>`
     const formatNumber = n => Number.isFinite(n) ? (Math.round(n * 10) / 10).toString() : '0'
 
+    function normalizeName(name){
+      return String(name || '').trim().toLowerCase()
+    }
+
+    function countsAgainstBalance(leaveTypeId){
+      const leaveType = leaveTypes.find(t => t.id === leaveTypeId)
+      const name = normalizeName(leaveType?.name)
+      return name === 'concediu de odihnă' || name === 'concediu de odihna'
+    }
+
     function computeApprovedDays(rows, employeeId = null){
-      const typeMap = new Map(leaveTypes.map(t => [t.id, t]))
       return rows
         .filter(r => r.status === 'approved' && (!employeeId || r.employee_id === employeeId))
-        .reduce((sum, r) => {
-          const type = typeMap.get(r.leave_type_id)
-          return type?.counts_against_balance ? sum + Number(r.total_days || 0) : sum
-        }, 0)
+        .reduce((sum, r) => countsAgainstBalance(r.leave_type_id) ? sum + Number(r.total_days || 0) : sum, 0)
     }
 
     function updateBalanceKPIs(){
@@ -293,9 +306,10 @@
 
     function renderLeaveTypes(){
       const sel = document.getElementById('leaveTypeSelect')
-      sel.innerHTML = leaveTypes.length
-        ? leaveTypes.map(t => `<option value="${t.id}">${t.name}</option>`).join('')
-        : '<option value="">Fără tipuri definite</option>'
+      const filtered = leaveTypes.filter(t => FIXED_LEAVE_TYPES.includes(t.name))
+      sel.innerHTML = filtered.length
+        ? filtered.map(t => `<option value="${t.id}">${t.name}</option>`).join('')
+        : '<option value="">Nu există tipurile necesare în baza de date</option>'
     }
 
     function renderEmployeesTable(rows){
@@ -313,17 +327,14 @@
         : '<tr><td colspan="8">Nu există încă cereri.</td></tr>'
     }
 
-    function computeBalances(rows, employeesList, leaveTypesList){
-      const typeMap = new Map(leaveTypesList.map(t => [t.id, t]))
+    function computeBalances(rows, employeesList){
       return employeesList.map(emp => {
         const empRows = rows.filter(r => r.employee_id === emp.id)
         const approved = empRows.reduce((sum, r) => {
-          const type = typeMap.get(r.leave_type_id)
-          return r.status === 'approved' && type?.counts_against_balance ? sum + Number(r.total_days || 0) : sum
+          return r.status === 'approved' && countsAgainstBalance(r.leave_type_id) ? sum + Number(r.total_days || 0) : sum
         }, 0)
         const pending = empRows.reduce((sum, r) => {
-          const type = typeMap.get(r.leave_type_id)
-          return r.status === 'pending' && type?.counts_against_balance ? sum + Number(r.total_days || 0) : sum
+          return r.status === 'pending' && countsAgainstBalance(r.leave_type_id) ? sum + Number(r.total_days || 0) : sum
         }, 0)
         const annual = Number(emp.annual_allowance || 0)
         return {
@@ -408,7 +419,7 @@
       await loadLeaveTypes()
       await loadEmployees()
       await loadRequests()
-      balances = computeBalances(requests, profile.role === 'admin' ? employees : [profile], leaveTypes)
+      balances = computeBalances(requests, profile.role === 'admin' ? employees : [profile])
       renderBalancesTable()
     }
 
