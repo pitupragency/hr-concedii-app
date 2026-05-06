@@ -1,10 +1,10 @@
 
 <!DOCTYPE html>
-<html lang="ro">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Listă concedii - Pi2 PR agency</title>
+  <title>Leave Tracker - Pi2 PR agency</title>
   <link rel="preconnect" href="https://api.fontshare.com">
   <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&display=swap" rel="stylesheet">
   <style>
@@ -27,13 +27,13 @@
 <body>
   <section id="loginScreen" class="login-wrap">
     <div class="card login-card">
-      <div class="brand"><div class="logo">HR</div><div><h1>Listă concedii</h1><p class="muted">Pi2 PR agency</p></div></div>
-      <div class="notice">Versiune funcțională pentru test: employee poate crea cereri, iar admin le poate aproba sau respinge.</div>
+      <div class="brand"><div class="logo">HR</div><div><h1>Leave Tracker</h1><p class="muted">Pi2 PR agency</p></div></div>
+      <div class="notice">Functional test version: employees can create requests, and admins can approve or reject them.</div>
       <div id="loginError" class="error hidden"></div>
       <form id="loginForm" class="form">
         <label>Email<input id="email" type="email" required></label>
         <label>Parolă<input id="password" type="password" required></label>
-        <button class="btn btn-primary" type="submit">Autentificare</button>
+        <button class="btn btn-primary" type="submit">Sign in</button>
       </form>
     </div>
   </section>
@@ -41,12 +41,12 @@
   <section id="appScreen" class="hidden">
     <div class="app">
       <aside class="sidebar">
-        <div class="brand"><div class="logo">HR</div><div><h2>Listă concedii</h2><p class="muted">Pi2 PR agency</p></div></div>
+        <div class="brand"><div class="logo">HR</div><div><h2>Leave Tracker</h2><p class="muted">Pi2 PR agency</p></div></div>
         <nav class="nav">
           <button class="active" data-view="dashboard">Dashboard</button>
-          <button data-view="requests">Cereri</button>
-          <button data-view="employees">Angajați</button>
-          <button data-view="balances">Sold zile</button>
+          <button data-view="requests">Requests</button>
+          <button data-view="employees">Employees</button>
+          <button data-view="balances">Leave Balance</button>
         </nav>
         <button class="btn" id="logoutBtn">Logout</button>
       </aside>
@@ -56,61 +56,61 @@
         <div id="appSuccess" class="success hidden"></div>
 
         <div class="top">
-          <div><h2 id="welcomeTitle">Bun venit</h2><p class="muted" id="welcomeSubtitle"></p></div>
-          <div class="badge" id="roleBadge">Rol</div>
+          <div><h2 id="welcomeTitle">Welcome</h2><p class="muted" id="welcomeSubtitle"></p></div>
+          <div class="badge" id="roleBadge">Role</div>
         </div>
 
         <section id="view-dashboard" class="view">
           <div class="grid">
-            <div class="kpi"><div class="card"><div class="muted">Utilizator logat</div><div class="value" id="kpiUser">-</div></div></div>
-            <div class="kpi"><div class="card"><div class="muted">Rol</div><div class="value" id="kpiRole">-</div></div></div>
-            <div class="kpi"><div class="card"><div class="muted">Total cereri încărcate</div><div class="value" id="kpiRequests">0</div></div></div>
-            <div class="kpi"><div class="card"><div class="muted">Zile aprobate</div><div class="value" id="kpiApprovedDays">0</div></div></div>
-            <div class="kpi"><div class="card"><div class="muted">Sold zile rămase</div><div class="value" id="kpiBalance">0</div></div></div>
+            <div class="kpi"><div class="card"><div class="muted">Logged-in user</div><div class="value" id="kpiUser">-</div></div></div>
+            <div class="kpi"><div class="card"><div class="muted">Role</div><div class="value" id="kpiRolee">-</div></div></div>
+            <div class="kpi"><div class="card"><div class="muted">Total requests loaded</div><div class="value" id="kpiRequests">0</div></div></div>
+            <div class="kpi"><div class="card"><div class="muted">Approved days</div><div class="value" id="kpiApprovedDays">0</div></div></div>
+            <div class="kpi"><div class="card"><div class="muted">Leave Balance rămase</div><div class="value" id="kpiBalance">0</div></div></div>
           </div>
         </section>
 
         <section id="view-requests" class="view hidden stack">
           <div class="card" id="requestFormCard">
-            <div class="section-head"><h3>Cerere nouă</h3><span class="muted">Tipul concediului este obligatoriu; evitați detalii medicale sensibile.</span></div>
+            <div class="section-head"><h3>New request</h3><span class="muted">Leave type is required; avoid sensitive medical details.</span></div>
             <form id="requestForm" class="form-grid">
-              <label class="span-6">Data început<input id="startDate" type="date" required></label>
-              <label class="span-6">Data final<input id="endDate" type="date" required></label>
-              <label class="span-6">Tip concediu<select id="leaveTypeSelect" required></select></label>
-              <label class="span-6">Total zile<input id="totalDays" type="number" step="0.5" min="0.5" required></label>
-              <label class="span-12">Notă<textarea id="requestNote" placeholder="Detalii administrative opționale"></textarea></label>
-              <div class="span-12"><button class="btn btn-primary" type="submit">Trimite cererea</button></div>
+              <label class="span-6">Start date<input id="startDate" type="date" required></label>
+              <label class="span-6">End date<input id="endDate" type="date" required></label>
+              <label class="span-6">Leave type<select id="leaveTypeSelect" required></select></label>
+              <label class="span-6">Total days<input id="totalDays" type="number" step="0.5" min="0.5" required></label>
+              <label class="span-12">Note<textarea id="requestNote" placeholder="Optional administrative details"></textarea></label>
+              <div class="span-12"><button class="btn btn-primary" type="submit">Submit request</button></div>
             </form>
           </div>
 
           <div class="card">
-            <div class="section-head"><h3>Cereri concediu</h3><span class="muted" id="requestsHint"></span></div>
+            <div class="section-head"><h3>Requests concediu</h3><span class="muted" id="requestsHint"></span></div>
             <div class="table-wrap"><table>
-              <thead><tr><th>Angajat</th><th>Tip</th><th>Început</th><th>Final</th><th>Total zile</th><th>Status</th><th>Notă</th><th>Acțiuni</th></tr></thead>
+              <thead><tr><th>Angajat</th><th>Tip</th><th>Start</th><th>End</th><th>Total days</th><th>Status</th><th>Note</th><th>Actions</th></tr></thead>
               <tbody id="requestsTableBody"></tbody>
             </table></div><div id="requestsMobileList" class="mobile-cards"></div>
           </div>
         </section>
 
         <section id="view-employees" class="view hidden">
-          <div class="card"><div class="section-head"><h3>Angajați vizibili</h3><span class="muted" id="employeesHint"></span></div><div class="table-wrap"><table><thead><tr><th>Nume</th><th>Email</th><th>Rol</th><th>Zile/an</th><th>Status</th></tr></thead><tbody id="employeesTableBody"></tbody></table></div><div id="employeesMobileList" class="mobile-cards"></div></div>
+          <div class="card"><div class="section-head"><h3>Employees vizibili</h3><span class="muted" id="employeesHint"></span></div><div class="table-wrap"><table><thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Days/year</th><th>Status</th></tr></thead><tbody id="employeesTableBody"></tbody></table></div><div id="employeesMobileList" class="mobile-cards"></div></div>
         </section>
 
         <section id="view-balances" class="view hidden">
           <div class="card">
-            <div class="section-head"><h3>Sold concedii angajați</h3><div class="actions"><button class="btn btn-small" id="exportRequestsBtn">Export cereri CSV</button><button class="btn btn-small" id="exportBalancesBtn">Export solduri CSV</button></div></div>
+            <div class="section-head"><h3>Employee leave balances</h3><div class="actions"><button class="btn btn-small" id="exportRequestsBtn">Export requests CSV</button><button class="btn btn-small" id="exportBalancesBtn">Export balances CSV</button></div></div>
             <div class="table-wrap"><table>
-              <thead><tr><th>Nume</th><th>Email</th><th>Total/an</th><th>Aprobate</th><th>În așteptare</th><th>Rămase</th></tr></thead>
+              <thead><tr><th>Name</th><th>Email</th><th>Total/year</th><th>Approved</th><th>Pending</th><th>Remaining</th></tr></thead>
               <tbody id="balancesTableBody"></tbody>
             </table></div><div id="balancesMobileList" class="mobile-cards"></div>
           </div>
         </section>
       </main>
-      <nav class="bottom-nav" aria-label="Navigare mobil">
+      <nav class="bottom-nav" aria-label="Mobile navigation">
         <button class="active" data-view="dashboard"><span>🏠</span><span>Dashboard</span></button>
-        <button data-view="requests"><span>📝</span><span>Cereri</span></button>
-        <button data-view="employees"><span>👥</span><span>Angajați</span></button>
-        <button data-view="balances"><span>📊</span><span>Sold zile</span></button>
+        <button data-view="requests"><span>📝</span><span>Requests</span></button>
+        <button data-view="employees"><span>👥</span><span>Employees</span></button>
+        <button data-view="balances"><span>📊</span><span>Leave Balance</span></button>
       </nav>
     </div>
   </section>
@@ -149,7 +149,7 @@
     function countsAgainstBalance(leaveTypeId){
       const leaveType = leaveTypes.find(t => t.id === leaveTypeId)
       const name = normalizeName(leaveType?.name)
-      return name === 'concediu de odihnă' || name === 'concediu de odihna'
+      return name === 'concediu de odihnă' || name === 'concediu de odihna' || name === 'vacation leave'
     }
 
     async function ensureFixedLeaveTypes(){
@@ -159,14 +159,14 @@
 
       const rowsToInsert = missing.map(name => ({
         name,
-        counts_against_balance: normalizeName(name) === 'concediu de odihnă',
+        counts_against_balance: normalizeName(name) === 'concediu de odihnă' || normalizeName(name) === 'concediu de odihna',
         requires_document: normalizeName(name) === 'medical',
         is_medical: normalizeName(name) === 'medical'
       }))
 
       const { error } = await supabase.from('leave_types').insert(rowsToInsert)
       if(error) {
-        console.error('Nu am putut crea tipurile lipsă:', error)
+        console.error('Could not create missing leave types:', error)
       }
     }
 
@@ -192,44 +192,60 @@
     }
 
     function renderProfile(){
-      document.getElementById('welcomeTitle').textContent = `Bun venit, ${profile.full_name}`
-      document.getElementById('welcomeSubtitle').textContent = `Ai intrat cu ${profile.email}`
-      document.getElementById('roleBadge').textContent = `Rol: ${profile.role}`
+      document.getElementById('welcomeTitle').textContent = `Welcome, ${profile.full_name}`
+      document.getElementById('welcomeSubtitle').textContent = `Signed in as ${profile.email}`
+      document.getElementById('roleBadge').textContent = `Role: ${profile.role}`
       document.getElementById('kpiUser').textContent = profile.full_name
-      document.getElementById('kpiRole').textContent = profile.role
-      document.getElementById('requestsHint').textContent = profile.role === 'admin' ? 'Vezi și administrezi toate cererile' : 'Vezi și trimiți cererile tale'
-      document.getElementById('employeesHint').textContent = profile.role === 'admin' ? 'Vezi toți angajații' : 'Vezi doar profilul tău'
+      document.getElementById('kpiRolee').textContent = profile.role
+      document.getElementById('requestsHint').textContent = profile.role === 'admin' ? 'View and manage all requests' : 'View and submit your requests'
+      document.getElementById('employeesHint').textContent = profile.role === 'admin' ? 'View all employees' : 'View only your profile'
     }
 
     function renderLeaveTypes(){
       const sel = document.getElementById('leaveTypeSelect')
       const ordered = FIXED_LEAVE_TYPES.map(name => leaveTypes.find(t => normalizeName(t.name) === normalizeName(name))).filter(Boolean)
+      const labelForType = (name) => {
+        const n = normalizeName(name)
+        if (n === 'concediu de odihnă' || n === 'concediu de odihna') return 'Vacation leave'
+        if (n === 'invoire' || n === 'învoire') return 'Time off'
+        if (n === 'altele') return 'Other'
+        if (n === 'medical' || n === 'concediu medical') return 'Medical'
+        return name
+      }
       sel.innerHTML = ordered.length
-        ? ordered.map(t => `<option value="${t.id}">${t.name}</option>`).join('')
-        : '<option value="">Nu există tipurile necesare în baza de date</option>'
+        ? ordered.map(t => `<option value="${t.id}">${labelForType(t.name)}</option>`).join('')
+        : '<option value="">The required leave types do not exist in the database</option>'
     }
 
     function renderEmployeesTable(rows){
       document.getElementById('employeesTableBody').innerHTML = rows.length
-        ? rows.map(emp => `<tr><td>${emp.full_name}</td><td>${emp.email}</td><td>${emp.role}</td><td>${emp.annual_allowance ?? '-'}</td><td>${emp.is_active ? 'Activ' : 'Inactiv'}</td></tr>`).join('')
-        : '<tr><td colspan="5">Nu există angajați vizibili.</td></tr>'
+        ? rows.map(emp => `<tr><td>${emp.full_name}</td><td>${emp.email}</td><td>${emp.role}</td><td>${emp.annual_allowance ?? '-'}</td><td>${emp.is_active ? 'Active' : 'Inactive'}</td></tr>`).join('')
+        : '<tr><td colspan="5">There are no visible employees.</td></tr>'
 
       document.getElementById('employeesMobileList').innerHTML = rows.length
-        ? rows.map(emp => `<article class="mobile-record"><div class="mobile-row"><div class="mobile-label">Nume</div><div class="mobile-value">${emp.full_name}</div></div><div class="mobile-row"><div class="mobile-label">Email</div><div class="mobile-value">${emp.email}</div></div><div class="mobile-row"><div class="mobile-label">Rol</div><div class="mobile-value">${emp.role}</div></div><div class="mobile-row"><div class="mobile-label">Zile pe an</div><div class="mobile-value">${emp.annual_allowance ?? '-'}</div></div><div class="mobile-row"><div class="mobile-label">Status</div><div class="mobile-value">${emp.is_active ? 'Activ' : 'Inactiv'}</div></div></article>`).join('')
-        : '<div class="mobile-record">Nu există angajați vizibili.</div>'
+        ? rows.map(emp => `<article class="mobile-record"><div class="mobile-row"><div class="mobile-label">Name</div><div class="mobile-value">${emp.full_name}</div></div><div class="mobile-row"><div class="mobile-label">Email</div><div class="mobile-value">${emp.email}</div></div><div class="mobile-row"><div class="mobile-label">Role</div><div class="mobile-value">${emp.role}</div></div><div class="mobile-row"><div class="mobile-label">Days per year</div><div class="mobile-value">${emp.annual_allowance ?? '-'}</div></div><div class="mobile-row"><div class="mobile-label">Status</div><div class="mobile-value">${emp.is_active ? 'Active' : 'Inactive'}</div></div></article>`).join('')
+        : '<div class="mobile-record">There are no visible employees.</div>'
     }
 
     function renderRequests(){
-      const typeMap = new Map(leaveTypes.map(t => [t.id, t.name]))
+      const typeLabelMap = new Map(leaveTypes.map(t => {
+        const n = normalizeName(t.name)
+        let label = t.name
+        if (n === 'concediu de odihnă' || n === 'concediu de odihna') label = 'Vacation leave'
+        else if (n === 'invoire' || n === 'învoire') label = 'Time off'
+        else if (n === 'altele') label = 'Other'
+        else if (n === 'medical' || n === 'concediu medical') label = 'Medical'
+        return [t.id, label]
+      }))
       document.getElementById('kpiRequests').textContent = requests.length
       updateBalanceKPIs()
       document.getElementById('requestsTableBody').innerHTML = requests.length
-        ? requests.map(r => `<tr><td>${r.employee?.full_name || profile.full_name}</td><td>${typeMap.get(r.leave_type_id) || '-'}</td><td>${r.start_date || '-'}</td><td>${r.end_date || '-'}</td><td>${r.total_days ?? '-'}</td><td>${statusBadge(r.status)}</td><td>${r.note || '-'}</td><td>${profile.role === 'admin' && r.status === 'pending' ? `<div class="actions"><button class="btn btn-small" data-action="approve" data-id="${r.id}">Aprobă</button><button class="btn btn-small" data-action="reject" data-id="${r.id}">Respinge</button></div>` : '-'}</td></tr>`).join('')
-        : '<tr><td colspan="8">Nu există încă cereri.</td></tr>'
+        ? requests.map(r => `<tr><td>${r.employee?.full_name || profile.full_name}</td><td>${typeLabelMap.get(r.leave_type_id) || '-'}</td><td>${r.start_date || '-'}</td><td>${r.end_date || '-'}</td><td>${r.total_days ?? '-'}</td><td>${statusBadge(r.status)}</td><td>${r.note || '-'}</td><td>${profile.role === 'admin' && r.status === 'pending' ? `<div class="actions"><button class="btn btn-small" data-action="approve" data-id="${r.id}">Approve</button><button class="btn btn-small" data-action="reject" data-id="${r.id}">Reject</button></div>` : '-'}</td></tr>`).join('')
+        : '<tr><td colspan="8">There are no requests yet.</td></tr>'
 
       document.getElementById('requestsMobileList').innerHTML = requests.length
-        ? requests.map(r => `<article class="mobile-record"><div class="mobile-row"><div class="mobile-label">Angajat</div><div class="mobile-value">${r.employee?.full_name || profile.full_name}</div></div><div class="mobile-row"><div class="mobile-label">Tip</div><div class="mobile-value">${typeMap.get(r.leave_type_id) || '-'}</div></div><div class="mobile-row"><div class="mobile-label">Perioadă</div><div class="mobile-value">${r.start_date || '-'} → ${r.end_date || '-'}</div></div><div class="mobile-row"><div class="mobile-label">Total zile</div><div class="mobile-value">${r.total_days ?? '-'}</div></div><div class="mobile-row"><div class="mobile-label">Status</div><div class="mobile-value">${statusBadge(r.status)}</div></div><div class="mobile-row"><div class="mobile-label">Notă</div><div class="mobile-value">${r.note || '-'}</div></div>${profile.role === 'admin' && r.status === 'pending' ? `<div class="mobile-actions"><button class="btn btn-small" data-action="approve" data-id="${r.id}">Aprobă</button><button class="btn btn-small" data-action="reject" data-id="${r.id}">Respinge</button></div>` : ''}</article>`).join('')
-        : '<div class="mobile-record">Nu există încă cereri.</div>'
+        ? requests.map(r => `<article class="mobile-record"><div class="mobile-row"><div class="mobile-label">Employee</div><div class="mobile-value">${r.employee?.full_name || profile.full_name}</div></div><div class="mobile-row"><div class="mobile-label">Type</div><div class="mobile-value">${typeLabelMap.get(r.leave_type_id) || '-'}</div></div><div class="mobile-row"><div class="mobile-label">Period</div><div class="mobile-value">${r.start_date || '-'} → ${r.end_date || '-'}</div></div><div class="mobile-row"><div class="mobile-label">Total days</div><div class="mobile-value">${r.total_days ?? '-'}</div></div><div class="mobile-row"><div class="mobile-label">Status</div><div class="mobile-value">${statusBadge(r.status)}</div></div><div class="mobile-row"><div class="mobile-label">Note</div><div class="mobile-value">${r.note || '-'}</div></div>${profile.role === 'admin' && r.status === 'pending' ? `<div class="mobile-actions"><button class="btn btn-small" data-action="approve" data-id="${r.id}">Approve</button><button class="btn btn-small" data-action="reject" data-id="${r.id}">Reject</button></div>` : ''}</article>`).join('')
+        : '<div class="mobile-record">There are no requests yet.</div>'
     }
 
     function computeBalances(rows, employeesList){
@@ -246,11 +262,11 @@
       const body = document.getElementById('balancesTableBody')
       body.innerHTML = balances.length
         ? balances.map(b => `<tr><td>${b.full_name}</td><td>${b.email}</td><td>${formatNumber(b.annual_allowance)}</td><td>${formatNumber(b.approved_days)}</td><td>${formatNumber(b.pending_days)}</td><td>${formatNumber(b.remaining_days)}</td></tr>`).join('')
-        : '<tr><td colspan="6">Nu există date disponibile.</td></tr>'
+        : '<tr><td colspan="6">No data available.</td></tr>'
 
       document.getElementById('balancesMobileList').innerHTML = balances.length
-        ? balances.map(b => `<article class="mobile-record"><div class="mobile-row"><div class="mobile-label">Nume</div><div class="mobile-value">${b.full_name}</div></div><div class="mobile-row"><div class="mobile-label">Email</div><div class="mobile-value">${b.email}</div></div><div class="mobile-row"><div class="mobile-label">Total pe an</div><div class="mobile-value">${formatNumber(b.annual_allowance)}</div></div><div class="mobile-row"><div class="mobile-label">Aprobate</div><div class="mobile-value">${formatNumber(b.approved_days)}</div></div><div class="mobile-row"><div class="mobile-label">În așteptare</div><div class="mobile-value">${formatNumber(b.pending_days)}</div></div><div class="mobile-row"><div class="mobile-label">Rămase</div><div class="mobile-value">${formatNumber(b.remaining_days)}</div></div></article>`).join('')
-        : '<div class="mobile-record">Nu există date disponibile.</div>'
+        ? balances.map(b => `<article class="mobile-record"><div class="mobile-row"><div class="mobile-label">Name</div><div class="mobile-value">${b.full_name}</div></div><div class="mobile-row"><div class="mobile-label">Email</div><div class="mobile-value">${b.email}</div></div><div class="mobile-row"><div class="mobile-label">Total per year</div><div class="mobile-value">${formatNumber(b.annual_allowance)}</div></div><div class="mobile-row"><div class="mobile-label">Approved</div><div class="mobile-value">${formatNumber(b.approved_days)}</div></div><div class="mobile-row"><div class="mobile-label">Pending</div><div class="mobile-value">${formatNumber(b.pending_days)}</div></div><div class="mobile-row"><div class="mobile-label">Remaining</div><div class="mobile-value">${formatNumber(b.remaining_days)}</div></div></article>`).join('')
+        : '<div class="mobile-record">No data available.</div>'
     }
 
     async function loadProfile(){
@@ -312,7 +328,7 @@
       hide('appError')
       await loadProfile()
       if(!profile){
-        show('loginError', 'Contul există în Auth, dar nu a fost găsit în employees.')
+        show('loginError', 'The account exists in Auth, but was not found in employees.')
         return
       }
       loginScreen.classList.add('hidden')
@@ -322,7 +338,7 @@
         await refreshAll()
       }catch(err){
         console.error(err)
-        show('appError', 'Eroare la încărcarea datelor: ' + (err.message || JSON.stringify(err)))
+        show('appError', 'Error loading data: ' + (err.message || JSON.stringify(err)))
       }
     }
 
@@ -375,11 +391,11 @@
         const { error } = await supabase.from('leave_requests').insert(payload)
         if(error) throw error
         document.getElementById('requestForm').reset()
-        show('appSuccess', 'Cererea a fost trimisă cu succes.')
+        show('appSuccess', 'The request was submitted successfully.')
         await refreshAll()
       } catch(err) {
         console.error(err)
-        show('appError', 'Nu am putut salva cererea: ' + (err.message || JSON.stringify(err)) + ' — verifică policy INSERT pe leave_requests și leave_types.')
+        show('appError', 'Could not save the request: ' + (err.message || JSON.stringify(err)) + ' — check the INSERT policy on leave_requests and leave_types.')
       }
     })
 
@@ -391,16 +407,16 @@
         const status = btn.dataset.action === 'approve' ? 'approved' : 'rejected'
         const { error } = await supabase.from('leave_requests').update({ status }).eq('id', btn.dataset.id)
         if(error) throw error
-        show('appSuccess', status === 'approved' ? 'Cererea a fost aprobată.' : 'Cererea a fost respinsă.')
+        show('appSuccess', status === 'approved' ? 'The request was approved.' : 'The request was rejected.')
         await refreshAll()
       } catch(err) {
         console.error(err)
-        show('appError', 'Nu am putut actualiza cererea: ' + (err.message || JSON.stringify(err)))
+        show('appError', 'Could not update the request: ' + (err.message || JSON.stringify(err)))
       }
     })
 
     function downloadCSV(filename, rows){
-      if(!rows.length){ show('appError', 'Nu există date pentru export.'); return }
+      if(!rows.length){ show('appError', 'There is no data to export.'); return }
       const headers = Object.keys(rows[0])
       const csv = [headers.join(','), ...rows.map(row => headers.map(h => `"${String(row[h] ?? '').replace(/"/g, '""')}"`).join(','))].join('\n')
       const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' })
@@ -412,13 +428,13 @@
 
     document.getElementById('exportRequestsBtn')?.addEventListener('click', () => {
       if(profile.role !== 'admin') return
-      const rows = requests.map(r => ({ angajat: r.employee?.full_name || profile.full_name, tip_concediu: leaveTypes.find(t => t.id === r.leave_type_id)?.name || '', inceput: r.start_date || '', final: r.end_date || '', total_zile: r.total_days || '', status: r.status || '', nota: r.note || '' }))
+      const rows = requests.map(r => ({ employee: r.employee?.full_name || profile.full_name, leave_type: (() => { const t = leaveTypes.find(t => t.id === r.leave_type_id); const n = normalizeName(t?.name); if (n === 'concediu de odihnă' || n === 'concediu de odihna') return 'Vacation leave'; if (n === 'invoire' || n === 'învoire') return 'Time off'; if (n === 'altele') return 'Other'; if (n === 'medical' || n === 'concediu medical') return 'Medical'; return t?.name || ''; })(), start: r.start_date || '', end: r.end_date || '', total_days: r.total_days || '', status: r.status || '', note: r.note || '' }))
       downloadCSV('cereri-concediu.csv', rows)
     })
 
     document.getElementById('exportBalancesBtn')?.addEventListener('click', () => {
       if(profile.role !== 'admin') return
-      const rows = balances.map(b => ({ nume: b.full_name, email: b.email, total_an: b.annual_allowance, aprobate: b.approved_days, in_asteptare: b.pending_days, ramase: b.remaining_days }))
+      const rows = balances.map(b => ({ name: b.full_name, email: b.email, annual_total: b.annual_allowance, approved: b.approved_days, pending: b.pending_days, remaining: b.remaining_days }))
       downloadCSV('solduri-concediu.csv', rows)
     })
 
