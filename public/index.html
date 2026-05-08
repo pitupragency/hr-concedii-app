@@ -72,12 +72,12 @@
 
         <section id="view-requests" class="view hidden stack">
           <div class="card" id="requestFormCard">
-            <div class="section-head"><h3>New request</h3><span class="muted">Leave type is required; avoid sensitive medical details.</span></div>
+            <div class="section-head"><h3>New request</h3><span class="muted">Leave type is required; weekends and Romanian public holidays are excluded automatically.</span></div>
             <form id="requestForm" class="form-grid">
               <label class="span-6">Start date<input id="startDate" type="date" required></label>
               <label class="span-6">End date<input id="endDate" type="date" required></label>
               <label class="span-6">Leave type<select id="leaveTypeSelect" required></select></label>
-              <label class="span-6">Total days<input id="totalDays" type="number" step="0.5" min="0.5" required></label>
+              <label class="span-6">Working days in Romania (excl. weekends + public holidays)<input id="totalDays" type="number" min="0" step="1" readonly></label>
               <label class="span-12">Note<textarea id="requestNote" placeholder="Optional administrative details"></textarea></label>
               <div class="span-12"><button class="btn btn-primary" type="submit">Submit request</button></div>
             </form>
@@ -126,6 +126,24 @@
     let profile = null, requests = [], employees = [], leaveTypes = [], balances = []
 
     const FIXED_LEAVE_TYPES = ['Concediu de odihnă', 'Medical', 'Invoire', 'Altele']
+    const ROMANIA_PUBLIC_HOLIDAYS_2026 = new Set([
+      '2026-01-01',
+      '2026-01-02',
+      '2026-01-06',
+      '2026-01-07',
+      '2026-01-24',
+      '2026-04-10',
+      '2026-04-12',
+      '2026-04-13',
+      '2026-05-01',
+      '2026-05-31',
+      '2026-06-01',
+      '2026-08-15',
+      '2026-11-30',
+      '2026-12-01',
+      '2026-12-25',
+      '2026-12-26'
+    ])
 
     const loginScreen = document.getElementById('loginScreen')
     const appScreen = document.getElementById('appScreen')
