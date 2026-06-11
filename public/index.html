@@ -5,12 +5,28 @@ function toLocalISODate(date){
   return `${year}-${month}-${day}`
 }
 
+function parseAppDate(value){
+  if(!value) return null
+
+  if(/^\d{4}-\d{2}-\d{2}$/.test(value)){
+    return new Date(`${value}T12:00:00`)
+  }
+
+  if(/^\d{2}\/\d{2}\/\d{4}$/.test(value)){
+    const [day, month, year] = value.split('/')
+    return new Date(`${year}-${month}-${day}T12:00:00`)
+  }
+
+  return null
+}
+
 function calcDays(a, b){
   if(!a || !b) return ''
 
-  const start = new Date(`${a}T12:00:00`)
-  const end = new Date(`${b}T12:00:00`)
+  const start = parseAppDate(a)
+  const end = parseAppDate(b)
 
+  if(!start || !end) return ''
   if(Number.isNaN(start.getTime()) || Number.isNaN(end.getTime())) return ''
   if(end < start) return ''
 
@@ -32,42 +48,3 @@ function calcDays(a, b){
 
   return count
 }
-
-function updateTotalDaysField(){
-  const startValue = document.getElementById('startDate').value
-  const endValue = document.getElementById('endDate').value
-  const result = calcDays(startValue, endValue)
-  document.getElementById('totalDays').value = result === '' ? '' : result
-}
-
-document.getElementById('startDate').addEventListener('change', updateTotalDaysField)
-document.getElementById('endDate').addEventListener('change', updateTotalDaysField)
-
-document.getElementById('requestForm').addEventListener('submit', async e => {
-  e.preventDefault()
-  hide('appError'); hide('appSuccess')
-
-  try {
-    updateTotalDaysField()
-
-    const payload = {
-      employee_id: profile.id,
-      leave_type_id: document.getElementById('leaveTypeSelect').value || null,
-      start_date: document.getElementById('startDate').value,
-      end_date: document.getElementById('endDate').value,
-      total_days: Number(document.getElementById('totalDays').value || 0),
-      note: document.getElementById('requestNote').value.trim() || null
-    }
-
-    const { error } = await supabase.from('leave_requests').insert(payload)
-    if(error) throw error
-
-    document.getElementById('requestForm').reset()
-    document.getElementById('totalDays').value = ''
-    show('appSuccess', 'The request was submitted successfully.')
-    await refreshAll()
-  } catch(err) {
-    console.error(err)
-    show('appError', 'Could not save the request: ' + (err.message || JSON.stringify(err)) + ' — check the INSERT policy on leave_requests and leave_types.')
-  }
-})
