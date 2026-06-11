@@ -1,380 +1,462 @@
-<script type="module">
-  import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
+<!DOCTYPE html> 
+<html lang="en"> 
+<head> 
+<meta charset="UTF-8" /> 
+<meta name="viewport" content="width=device-width, initial-scale=1.0" /> 
+<title>Leave Tracker - Pi2 PR agency</title> 
+<link rel="preconnect" href="https://api.fontshare.com"> 
+<link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&display=swap" rel="stylesheet"> 
+<style> 
+:root{--bg:#f7f4f8;--surface:#fff;--surface-2:#faf6f9;--border:#ead7e2;--text:#271721;--muted:#76576a;--primary:#AA0C60;--primary-soft:#f8dbe9;--danger:#b42318;--success:#2d7d46;--warning:#9b5d00;--radius:16px;--font:'Satoshi',Arial,sans-serif} 
+*{box-sizing:border-box} html{-webkit-text-size-adjust:100%;text-size-adjust:100%} body{margin:0;background:var(--bg);color:var(--text);font-family:var(--font);overflow-x:hidden} .hidden{display:none!important} 
+.login-wrap{min-height:100vh;display:grid;place-items:center;padding:24px}.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px;min-width:0} 
+.login-card{width:min(100%,460px);display:grid;gap:16px}.brand{display:flex;gap:12px;align-items:center;min-width:0}.brand>div:last-child{min-width:0}.logo{width:48px;height:48px;border-radius:14px;background:linear-gradient(135deg,var(--primary),#d63384);display:grid;place-items:center;color:#fff;font-weight:700;flex-shrink:0} 
+h1,h2,h3,p{margin:0} h1,h2,h3{overflow-wrap:anywhere} .muted{color:var(--muted);overflow-wrap:anywhere} .notice,.error,.success{padding:14px 16px;border-radius:12px}.notice{background:var(--primary-soft)} .error{background:rgba(180,35,24,.08);color:var(--danger)} .success{background:rgba(45,125,70,.10);color:var(--success)} 
+.form,.form-grid{display:grid;gap:14px} .form-grid{grid-template-columns:repeat(12,minmax(0,1fr))} label{display:grid;gap:8px;font-weight:700;min-width:0} input,button,select,textarea{font:inherit} input,select,textarea{padding:14px 16px;border-radius:12px;border:1px solid var(--border);background:var(--surface-2);width:100%;min-width:0} textarea{min-height:88px;resize:vertical} 
+.btn{padding:14px 16px;border-radius:12px;border:1px solid var(--border);background:var(--surface);cursor:pointer;font-weight:700;min-height:44px}.btn-primary{background:var(--primary);color:#fff;border-color:var(--primary)} .btn-small{padding:8px 12px;font-size:14px;min-height:36px} 
+.app{display:grid;grid-template-columns:260px minmax(0,1fr);min-height:100vh}.sidebar{background:var(--surface);border-right:1px solid var(--border);padding:24px;display:flex;flex-direction:column;gap:24px;min-width:0}.nav{display:grid;gap:8px}.nav button{text-align:left;padding:14px 16px;border-radius:12px;border:1px solid transparent;background:transparent;min-height:44px}.nav button.active{background:var(--primary-soft);color:var(--primary)} 
+.main{padding:24px;display:grid;gap:24px;min-width:0}.top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}.badge{padding:8px 12px;border-radius:999px;background:var(--primary-soft);color:var(--primary);font-size:12px;font-weight:700;max-width:100%;white-space:normal}.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:16px}.kpi{grid-column:span 4}.kpi .card{height:100%}.value{font-size:clamp(22px,5vw,24px);font-weight:700;overflow-wrap:anywhere} 
+.table-wrap{width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}.table-wrap table{min-width:760px} table{width:100%;border-collapse:collapse} th,td{padding:12px 10px;border-bottom:1px solid var(--border);text-align:left;vertical-align:top;overflow-wrap:anywhere} th{color:var(--muted);font-size:14px}.view.hidden{display:none}.status{padding:6px 10px;border-radius:999px;font-size:12px;font-weight:700;display:inline-flex}.approved{background:rgba(45,125,70,.12);color:var(--success)}.pending{background:rgba(155,93,0,.12);color:var(--warning)}.rejected{background:rgba(180,35,24,.12);color:var(--danger)} 
+.section-head{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;margin-bottom:12px}.stack{display:grid;gap:16px}.span-6{grid-column:span 6}.span-12{grid-column:span 12}.actions{display:flex;gap:8px;flex-wrap:wrap}.mobile-cards{display:none}.bottom-nav{display:none} 
+@media (max-width:960px){.app{grid-template-columns:1fr}.sidebar{border-right:0;border-bottom:1px solid var(--border);padding:16px}.main{padding:16px}.top,.section-head{flex-direction:column;align-items:flex-start}.kpi,.span-6,.span-12{grid-column:span 12}.actions{width:100%}.actions .btn{flex:1}} 
+@media (max-width:720px){.login-wrap{padding:16px}.card{padding:16px}.brand{align-items:flex-start}.sidebar .nav,.sidebar #logoutBtn{display:none}.sidebar{position:static;padding:16px 16px 8px;border-bottom:0}.main{padding:8px 16px 88px}.table-wrap{display:none}.mobile-cards{display:grid;gap:12px}.mobile-record{background:var(--surface-2);border:1px solid var(--border);border-radius:14px;padding:14px;display:grid;gap:8px}.mobile-row{display:grid;gap:4px}.mobile-label{font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}.mobile-value{overflow-wrap:anywhere}.mobile-actions{display:flex;gap:8px;flex-wrap:wrap}.mobile-actions .btn{flex:1}.badge{width:100%}.top{gap:8px}.bottom-nav{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;position:fixed;left:12px;right:12px;bottom:12px;z-index:30;background:rgba(255,255,255,.96);backdrop-filter:blur(12px);border:1px solid var(--border);border-radius:18px;padding:8px;box-shadow:0 8px 24px rgba(39,23,33,.08)}.bottom-nav button{min-height:52px;border-radius:12px;padding:8px 6px;display:grid;gap:4px;justify-items:center;align-content:center;text-align:center;font-size:12px;line-height:1.15}.bottom-nav button span{font-size:11px}.bottom-nav button.active{background:var(--primary-soft);color:var(--primary)}} 
+@media (max-width:420px){.main{padding:8px 12px 88px}.sidebar{padding:12px 12px 4px}.card{padding:14px}.btn,input,select,textarea,.bottom-nav button{font-size:16px}.bottom-nav{left:10px;right:10px;bottom:10px}.bottom-nav button{font-size:11px}} 
+</style> 
+</head> 
+<body> 
+<section id="loginScreen" class="login-wrap"> 
+<div class="card login-card"> 
+<div class="brand"><div class="logo">HR</div><div><h1>Leave Tracker</h1><p class="muted">Pi2 PR agency</p></div></div> 
+<div class="notice">Functional test version: employees can create requests, and admins can approve or reject them.</div> 
+<div id="loginError" class="error hidden"></div> 
+<form id="loginForm" class="form"> 
+<label>Email<input id="email" type="email" required></label> 
+<label>Parolă<input id="password" type="password" required></label> 
+<button class="btn btn-primary" type="submit">Sign in</button> 
+</form> 
+</div> 
+</section> 
 
-  const supabase = createClient(
-    'https://giaxergqcrvezigqkmea.supabase.co',
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdpYXhlcmdxY3J2ZXppZ3FrbWVhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY3MzEwNDksImV4cCI6MjA5MjMwNzA0OX0.-mKUwl89qsJ8OkmQWLB_E0Cm5vkon6JG-2ydhmQoXKA'
-  )
+<section id="appScreen" class="hidden"> 
+<div class="app"> 
+<aside class="sidebar"> 
+<div class="brand"><div class="logo">HR</div><div><h2>Leave Tracker</h2><p class="muted">Pi2 PR agency</p></div></div> 
+<nav class="nav"> 
+<button class="active" data-view="dashboard">Dashboard</button> 
+<button data-view="requests">Requests</button> 
+<button data-view="employees">Employees</button> 
+<button data-view="balances">Leave Balance</button> 
+</nav> 
+<button class="btn" id="logoutBtn">Logout</button> 
+</aside> 
 
-  let profile = null, requests = [], employees = [], leaveTypes = [], balances = []
+<main class="main"> 
+<div id="appError" class="error hidden"></div> 
+<div id="appSuccess" class="success hidden"></div> 
 
-  const FIXED_LEAVE_TYPES = ['Concediu de odihnă', 'Medical', 'Invoire', 'Altele']
-  const ROMANIA_PUBLIC_HOLIDAYS_2026 = new Set([
-    '2026-01-01',
-    '2026-01-02',
-    '2026-01-06',
-    '2026-01-07',
-    '2026-01-24',
-    '2026-04-10',
-    '2026-04-12',
-    '2026-04-13',
-    '2026-05-01',
-    '2026-05-31',
-    '2026-06-01',
-    '2026-08-15',
-    '2026-11-30',
-    '2026-12-01',
-    '2026-12-25',
-    '2026-12-26'
-  ])
+<div class="top"> 
+<div><h2 id="welcomeTitle">Welcome</h2><p class="muted" id="welcomeSubtitle"></p></div> 
+<div class="badge" id="roleBadge">Role</div> 
+</div> 
 
-  const loginScreen = document.getElementById('loginScreen')
-  const appScreen = document.getElementById('appScreen')
+<section id="view-dashboard" class="view"> 
+<div class="grid"> 
+<div class="kpi"><div class="card"><div class="muted">Logged-in user</div><div class="value" id="kpiUser">-</div></div></div> 
+<div class="kpi"><div class="card"><div class="muted">Role</div><div class="value" id="kpiRolee">-</div></div></div> 
+<div class="kpi"><div class="card"><div class="muted">Total requests loaded</div><div class="value" id="kpiRequests">0</div></div></div> 
+<div class="kpi"><div class="card"><div class="muted">Approved days</div><div class="value" id="kpiApprovedDays">0</div></div></div> 
+<div class="kpi"><div class="card"><div class="muted">Leave Balance rămase</div><div class="value" id="kpiBalance">0</div></div></div> 
+</div> 
+</section> 
 
-  const show = (id, msg) => {
-    const e = document.getElementById(id)
-    e.textContent = msg
-    e.classList.remove('hidden')
-  }
+<section id="view-requests" class="view hidden stack"> 
+<div class="card" id="requestFormCard"> 
+<div class="section-head"><h3>New request</h3><span class="muted">Leave type is required; weekends and Romanian public holidays are excluded automatically.</span></div> 
+<form id="requestForm" class="form-grid"> 
+<label class="span-6">Start date<input id="startDate" type="date" required></label> 
+<label class="span-6">End date<input id="endDate" type="date" required></label> 
+<label class="span-6">Leave type<select id="leaveTypeSelect" required></select></label> 
+<label class="span-6">Working days in Romania (excl. weekends + public holidays)<input id="totalDays" type="number" min="0" step="1" readonly></label> 
+<label class="span-12">Note<textarea id="requestNote" placeholder="Optional administrative details"></textarea></label> 
+<div class="span-12"><button class="btn btn-primary" type="submit">Submit request</button></div> 
+</form> 
+</div> 
 
-  const hide = id => {
-    const e = document.getElementById(id)
-    e.textContent = ''
-    e.classList.add('hidden')
-  }
+<div class="card"> 
+<div class="section-head"><h3>Requests concediu</h3><span class="muted" id="requestsHint"></span></div> 
+<div class="table-wrap"><table> 
+<thead><tr><th>Angajat</th><th>Tip</th><th>Start</th><th>End</th><th>Total days</th><th>Status</th><th>Note</th><th>Actions</th></tr></thead> 
+<tbody id="requestsTableBody"></tbody> 
+</table></div><div id="requestsMobileList" class="mobile-cards"></div> 
+</div> 
+</section> 
 
-  const statusBadge = s => `<span class="status ${s==='approved'?'approved':s==='rejected'?'rejected':'pending'}">${s || '-'}</span>`
-  const formatNumber = n => Number.isFinite(n) ? (Math.round(n * 10) / 10).toString() : '0'
-  const normalizeName = name => String(name || '').trim().toLowerCase()
+<section id="view-employees" class="view hidden"> 
+<div class="card"><div class="section-head"><h3>Employees vizibili</h3><span class="muted" id="employeesHint"></span></div><div class="table-wrap"><table><thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Days/year</th><th>Status</th></tr></thead><tbody id="employeesTableBody"></tbody></table></div><div id="employeesMobileList" class="mobile-cards"></div></div> 
+</section> 
 
-  function countsAgainstBalance(leaveTypeId){
-    const leaveType = leaveTypes.find(t => t.id === leaveTypeId)
-    const name = normalizeName(leaveType?.name)
-    return name === 'concediu de odihnă' || name === 'concediu de odihna' || name === 'vacation leave'
-  }
+<section id="view-balances" class="view hidden"> 
+<div class="card"> 
+<div class="section-head"><h3>Employee leave balances</h3><div class="actions"><button class="btn btn-small" id="exportRequestsBtn">Export requests CSV</button><button class="btn btn-small" id="exportBalancesBtn">Export balances CSV</button></div></div> 
+<div class="table-wrap"><table> 
+<thead><tr><th>Name</th><th>Email</th><th>Total/year</th><th>Approved</th><th>Pending</th><th>Remaining</th></tr></thead> 
+<tbody id="balancesTableBody"></tbody> 
+</table></div><div id="balancesMobileList" class="mobile-cards"></div> 
+</div> 
+</section> 
+</main> 
+<nav class="bottom-nav" aria-label="Mobile navigation"> 
+<button class="active" data-view="dashboard"><span>🏠</span><span>Dashboard</span></button> 
+<button data-view="requests"><span>📝</span><span>Requests</span></button> 
+<button data-view="employees"><span>👥</span><span>Employees</span></button> 
+<button data-view="balances"><span>📊</span><span>Leave Balance</span></button> 
+</nav> 
+</div> 
+</section> 
 
-  async function ensureFixedLeaveTypes(){
-    const existingNames = new Set(leaveTypes.map(t => normalizeName(t.name)))
-    const missing = FIXED_LEAVE_TYPES.filter(name => !existingNames.has(normalizeName(name)))
-    if(!missing.length) return
+<script type="module"> 
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2' 
 
-    const rowsToInsert = missing.map(name => ({
-      name,
-      counts_against_balance: normalizeName(name) === 'concediu de odihnă' || normalizeName(name) === 'concediu de odihna',
-      requires_document: normalizeName(name) === 'medical',
-      is_medical: normalizeName(name) === 'medical'
-    }))
+const supabase = createClient( 
+'https://giaxergqcrvezigqkmea.supabase.co', 
+'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdpYXhlcmdxY3J2ZXppZ3FrbWVhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY3MzEwNDksImV4cCI6MjA5MjMwNzA0OX0.-mKUwl89qsJ8OkmQWLB_E0Cm5vkon6JG-2ydhmQoXKA' 
+) 
 
-    const { error } = await supabase.from('leave_types').insert(rowsToInsert)
-    if(error) {
-      console.error('Could not create missing leave types:', error)
-    }
-  }
+let profile = null, requests = [], employees = [], leaveTypes = [], balances = [] 
 
-  function computeApprovedDays(rows, employeeId = null){
-    return rows
-      .filter(r => r.status === 'approved' && (!employeeId || r.employee_id === employeeId))
-      .reduce((sum, r) => countsAgainstBalance(r.leave_type_id) ? sum + Number(r.total_days || 0) : sum, 0)
-  }
+const FIXED_LEAVE_TYPES = ['Concediu de odihnă', 'Medical', 'Invoire', 'Altele'] 
+const ROMANIA_PUBLIC_HOLIDAYS_2026 = new Set([ 
+'2026-01-01', 
+'2026-01-02', 
+'2026-01-06', 
+'2026-01-07', 
+'2026-01-24', 
+'2026-04-10', 
+'2026-04-12', 
+'2026-04-13', 
+'2026-05-01', 
+'2026-05-31', 
+'2026-06-01', 
+'2026-08-15', 
+'2026-11-30', 
+'2026-12-01', 
+'2026-12-25', 
+'2026-12-26' 
+]) 
 
-  function updateBalanceKPIs(){
-    const approvedDays = computeApprovedDays(requests, profile.id)
-    const allowance = Number(profile.annual_allowance || 0)
-    const balance = profile.role === 'admin' ? approvedDays : Math.max(allowance - approvedDays, 0)
-    document.getElementById('kpiApprovedDays').textContent = formatNumber(approvedDays)
-    document.getElementById('kpiBalance').textContent = profile.role === 'admin' ? '—' : formatNumber(balance)
-  }
+const loginScreen = document.getElementById('loginScreen') 
+const appScreen = document.getElementById('appScreen') 
 
-  function toLocalISODate(date){
-    const year = date.getFullYear()
-    const month = String(date.getMonth() + 1).padStart(2, '0')
-    const day = String(date.getDate()).padStart(2, '0')
-    return `${year}-${month}-${day}`
-  }
+const show = (id, msg) => { 
+const e = document.getElementById(id) 
+e.textContent = msg 
+e.classList.remove('hidden') 
+} 
 
-  function calcDays(a, b){
-    if(!a || !b) return ''
+const hide = id => { 
+const e = document.getElementById(id) 
+e.textContent = '' 
+e.classList.add('hidden') 
+} 
 
-    const start = new Date(`${a}T12:00:00`)
-    const end = new Date(`${b}T12:00:00`)
+const statusBadge = s => `<span class="status ${s==='approved'?'approved':s==='rejected'?'rejected':'pending'}">${s || '-'}</span>` 
+const formatNumber = n => Number.isFinite(n) ? (Math.round(n * 10) / 10).toString() : '0' 
+const normalizeName = name => String(name || '').trim().toLowerCase() 
 
-    if(Number.isNaN(start.getTime()) || Number.isNaN(end.getTime())) return ''
-    if(end < start) return ''
+function countsAgainstBalance(leaveTypeId){ 
+const leaveType = leaveTypes.find(t => t.id === leaveTypeId) 
+const name = normalizeName(leaveType?.name) 
+return name === 'concediu de odihnă' || name === 'concediu de odihna' || name === 'vacation leave' 
+} 
 
-    let count = 0
-    const current = new Date(start)
+async function ensureFixedLeaveTypes(){ 
+const existingNames = new Set(leaveTypes.map(t => normalizeName(t.name))) 
+const missing = FIXED_LEAVE_TYPES.filter(name => !existingNames.has(normalizeName(name))) 
+if(!missing.length) return 
 
-    while(current <= end){
-      const dayOfWeek = current.getDay()
-      const isoDate = toLocalISODate(current)
-      const isWeekend = dayOfWeek === 0 || dayOfWeek === 6
-      const isPublicHoliday = ROMANIA_PUBLIC_HOLIDAYS_2026.has(isoDate)
+const rowsToInsert = missing.map(name => ({ 
+name, 
+counts_against_balance: normalizeName(name) === 'concediu de odihnă' || normalizeName(name) === 'concediu de odihna', 
+requires_document: normalizeName(name) === 'medical', 
+is_medical: normalizeName(name) === 'medical' 
+})) 
 
-      if(!isWeekend && !isPublicHoliday){
-        count++
-      }
+const { error } = await supabase.from('leave_types').insert(rowsToInsert) 
+if(error) { 
+console.error('Could not create missing leave types:', error) 
+} 
+} 
 
-      current.setDate(current.getDate() + 1)
-    }
+function computeApprovedDays(rows, employeeId = null){ 
+return rows 
+.filter(r => r.status === 'approved' && (!employeeId || r.employee_id === employeeId)) 
+.reduce((sum, r) => countsAgainstBalance(r.leave_type_id) ? sum + Number(r.total_days || 0) : sum, 0) 
+} 
 
-    return count
-  }
+function updateBalanceKPIs(){ 
+const approvedDays = computeApprovedDays(requests, profile.id) 
+const allowance = Number(profile.annual_allowance || 0) 
+const balance = profile.role === 'admin' ? approvedDays : Math.max(allowance - approvedDays, 0) 
+document.getElementById('kpiApprovedDays').textContent = formatNumber(approvedDays) 
+document.getElementById('kpiBalance').textContent = profile.role === 'admin' ? '—' : formatNumber(balance) 
+} 
 
-  function updateTotalDaysField(){
-    const startValue = document.getElementById('startDate').value
-    const endValue = document.getElementById('endDate').value
-    const result = calcDays(startValue, endValue)
-    document.getElementById('totalDays').value = result === '' ? '' : result
-  }
+function calcDays(a, b){ 
+if(!a || !b) return '' 
+const start = new Date(a), end = new Date(b) 
+if(end < start) return '' 
+return ((end - start) / 86400000) + 1 
+} 
 
-  function renderProfile(){
-    document.getElementById('welcomeTitle').textContent = `Welcome, ${profile.full_name}`
-    document.getElementById('welcomeSubtitle').textContent = `Signed in as ${profile.email}`
-    document.getElementById('roleBadge').textContent = `Role: ${profile.role}`
-    document.getElementById('kpiUser').textContent = profile.full_name
-    document.getElementById('kpiRolee').textContent = profile.role
-    document.getElementById('requestsHint').textContent = profile.role === 'admin' ? 'View and manage all requests' : 'View and submit your requests'
-    document.getElementById('employeesHint').textContent = profile.role === 'admin' ? 'View all employees' : 'View only your profile'
-  }
+function renderProfile(){ 
+document.getElementById('welcomeTitle').textContent = `Welcome, ${profile.full_name}` 
+document.getElementById('welcomeSubtitle').textContent = `Signed in as ${profile.email}` 
+document.getElementById('roleBadge').textContent = `Role: ${profile.role}` 
+document.getElementById('kpiUser').textContent = profile.full_name 
+document.getElementById('kpiRolee').textContent = profile.role 
+document.getElementById('requestsHint').textContent = profile.role === 'admin' ? 'View and manage all requests' : 'View and submit your requests' 
+document.getElementById('employeesHint').textContent = profile.role === 'admin' ? 'View all employees' : 'View only your profile' 
+} 
 
-  function renderLeaveTypes(){
-    const sel = document.getElementById('leaveTypeSelect')
-    const ordered = FIXED_LEAVE_TYPES.map(name => leaveTypes.find(t => normalizeName(t.name) === normalizeName(name))).filter(Boolean)
-    const labelForType = (name) => {
-      const n = normalizeName(name)
-      if (n === 'concediu de odihnă' || n === 'concediu de odihna') return 'Vacation leave'
-      if (n === 'invoire' || n === 'învoire') return 'Time off'
-      if (n === 'altele') return 'Other'
-      if (n === 'medical' || n === 'concediu medical') return 'Medical'
-      return name
-    }
-    sel.innerHTML = ordered.length
-      ? ordered.map(t => `<option value="${t.id}">${labelForType(t.name)}</option>`).join('')
-      : '<option value="">The required leave types do not exist in the database</option>'
-  }
+function renderLeaveTypes(){ 
+const sel = document.getElementById('leaveTypeSelect') 
+const ordered = FIXED_LEAVE_TYPES.map(name => leaveTypes.find(t => normalizeName(t.name) === normalizeName(name))).filter(Boolean) 
+const labelForType = (name) => { 
+const n = normalizeName(name) 
+if (n === 'concediu de odihnă' || n === 'concediu de odihna') return 'Vacation leave' 
+if (n === 'invoire' || n === 'învoire') return 'Time off' 
+if (n === 'altele') return 'Other' 
+if (n === 'medical' || n === 'concediu medical') return 'Medical' 
+return name 
+} 
+sel.innerHTML = ordered.length 
+? ordered.map(t => `<option value="${t.id}">${labelForType(t.name)}</option>`).join('') 
+: '<option value="">The required leave types do not exist in the database</option>' 
+} 
 
-  function renderEmployeesTable(rows){
-    document.getElementById('employeesTableBody').innerHTML = rows.length
-      ? rows.map(emp => `<tr><td>${emp.full_name}</td><td>${emp.email}</td><td>${emp.role}</td><td>${emp.annual_allowance ?? '-'}</td><td>${emp.is_active ? 'Active' : 'Inactive'}</td></tr>`).join('')
-      : '<tr><td colspan="5">There are no visible employees.</td></tr>'
+function renderEmployeesTable(rows){ 
+document.getElementById('employeesTableBody').innerHTML = rows.length 
+? rows.map(emp => `<tr><td>${emp.full_name}</td><td>${emp.email}</td><td>${emp.role}</td><td>${emp.annual_allowance ?? '-'}</td><td>${emp.is_active ? 'Active' : 'Inactive'}</td></tr>`).join('') 
+: '<tr><td colspan="5">There are no visible employees.</td></tr>' 
 
-    document.getElementById('employeesMobileList').innerHTML = rows.length
-      ? rows.map(emp => `<article class="mobile-record"><div class="mobile-row"><div class="mobile-label">Name</div><div class="mobile-value">${emp.full_name}</div></div><div class="mobile-row"><div class="mobile-label">Email</div><div class="mobile-value">${emp.email}</div></div><div class="mobile-row"><div class="mobile-label">Role</div><div class="mobile-value">${emp.role}</div></div><div class="mobile-row"><div class="mobile-label">Days per year</div><div class="mobile-value">${emp.annual_allowance ?? '-'}</div></div><div class="mobile-row"><div class="mobile-label">Status</div><div class="mobile-value">${emp.is_active ? 'Active' : 'Inactive'}</div></div></article>`).join('')
-      : '<div class="mobile-record">There are no visible employees.</div>'
-  }
+document.getElementById('employeesMobileList').innerHTML = rows.length 
+? rows.map(emp => `<article class="mobile-record"><div class="mobile-row"><div class="mobile-label">Name</div><div class="mobile-value">${emp.full_name}</div></div><div class="mobile-row"><div class="mobile-label">Email</div><div class="mobile-value">${emp.email}</div></div><div class="mobile-row"><div class="mobile-label">Role</div><div class="mobile-value">${emp.role}</div></div><div class="mobile-row"><div class="mobile-label">Days per year</div><div class="mobile-value">${emp.annual_allowance ?? '-'}</div></div><div class="mobile-row"><div class="mobile-label">Status</div><div class="mobile-value">${emp.is_active ? 'Active' : 'Inactive'}</div></div></article>`).join('') 
+: '<div class="mobile-record">There are no visible employees.</div>' 
+} 
 
-  function renderRequests(){
-    const typeLabelMap = new Map(leaveTypes.map(t => {
-      const n = normalizeName(t.name)
-      let label = t.name
-      if (n === 'concediu de odihnă' || n === 'concediu de odihna') label = 'Vacation leave'
-      else if (n === 'invoire' || n === 'învoire') label = 'Time off'
-      else if (n === 'altele') label = 'Other'
-      else if (n === 'medical' || n === 'concediu medical') label = 'Medical'
-      return [t.id, label]
-    }))
+function renderRequests(){ 
+const typeLabelMap = new Map(leaveTypes.map(t => { 
+const n = normalizeName(t.name) 
+let label = t.name 
+if (n === 'concediu de odihnă' || n === 'concediu de odihna') label = 'Vacation leave' 
+else if (n === 'invoire' || n === 'învoire') label = 'Time off' 
+else if (n === 'altele') label = 'Other' 
+else if (n === 'medical' || n === 'concediu medical') label = 'Medical' 
+return [t.id, label] 
+})) 
+document.getElementById('kpiRequests').textContent = requests.length 
+updateBalanceKPIs() 
+document.getElementById('requestsTableBody').innerHTML = requests.length 
+? requests.map(r => `<tr><td>${r.employee?.full_name || profile.full_name}</td><td>${typeLabelMap.get(r.leave_type_id) || '-'}</td><td>${r.start_date || '-'}</td><td>${r.end_date || '-'}</td><td>${r.total_days ?? '-'}</td><td>${statusBadge(r.status)}</td><td>${r.note || '-'}</td><td>${profile.role === 'admin' && r.status === 'pending' ? `<div class="actions"><button class="btn btn-small" data-action="approve" data-id="${r.id}">Approve</button><button class="btn btn-small" data-action="reject" data-id="${r.id}">Reject</button></div>` : '-'}</td></tr>`).join('') 
+: '<tr><td colspan="8">There are no requests yet.</td></tr>' 
 
-    document.getElementById('kpiRequests').textContent = requests.length
-    updateBalanceKPIs()
+document.getElementById('requestsMobileList').innerHTML = requests.length 
+? requests.map(r => `<article class="mobile-record"><div class="mobile-row"><div class="mobile-label">Employee</div><div class="mobile-value">${r.employee?.full_name || profile.full_name}</div></div><div class="mobile-row"><div class="mobile-label">Type</div><div class="mobile-value">${typeLabelMap.get(r.leave_type_id) || '-'}</div></div><div class="mobile-row"><div class="mobile-label">Period</div><div class="mobile-value">${r.start_date || '-'} → ${r.end_date || '-'}</div></div><div class="mobile-row"><div class="mobile-label">Total days</div><div class="mobile-value">${r.total_days ?? '-'}</div></div><div class="mobile-row"><div class="mobile-label">Status</div><div class="mobile-value">${statusBadge(r.status)}</div></div><div class="mobile-row"><div class="mobile-label">Note</div><div class="mobile-value">${r.note || '-'}</div></div>${profile.role === 'admin' && r.status === 'pending' ? `<div class="mobile-actions"><button class="btn btn-small" data-action="approve" data-id="${r.id}">Approve</button><button class="btn btn-small" data-action="reject" data-id="${r.id}">Reject</button></div>` : ''}</article>`).join('') 
+: '<div class="mobile-record">There are no requests yet.</div>' 
+} 
 
-    document.getElementById('requestsTableBody').innerHTML = requests.length
-      ? requests.map(r => `<tr><td>${r.employee?.full_name || profile.full_name}</td><td>${typeLabelMap.get(r.leave_type_id) || '-'}</td><td>${r.start_date || '-'}</td><td>${r.end_date || '-'}</td><td>${r.total_days ?? '-'}</td><td>${statusBadge(r.status)}</td><td>${r.note || '-'}</td><td>${profile.role === 'admin' && r.status === 'pending' ? `<div class="actions"><button class="btn btn-small" data-action="approve" data-id="${r.id}">Approve</button><button class="btn btn-small" data-action="reject" data-id="${r.id}">Reject</button></div>` : '-'}</td></tr>`).join('')
-      : '<tr><td colspan="8">There are no requests yet.</td></tr>'
+function computeBalances(rows, employeesList){ 
+return employeesList.map(emp => { 
+const empRows = rows.filter(r => r.employee_id === emp.id) 
+const approved = empRows.reduce((sum, r) => r.status === 'approved' && countsAgainstBalance(r.leave_type_id) ? sum + Number(r.total_days || 0) : sum, 0) 
+const pending = empRows.reduce((sum, r) => r.status === 'pending' && countsAgainstBalance(r.leave_type_id) ? sum + Number(r.total_days || 0) : sum, 0) 
+const annual = Number(emp.annual_allowance || 0) 
+return { full_name: emp.full_name, email: emp.email, annual_allowance: annual, approved_days: approved, pending_days: pending, remaining_days: Math.max(annual - approved, 0) } 
+}) 
+} 
 
-    document.getElementById('requestsMobileList').innerHTML = requests.length
-      ? requests.map(r => `<article class="mobile-record"><div class="mobile-row"><div class="mobile-label">Employee</div><div class="mobile-value">${r.employee?.full_name || profile.full_name}</div></div><div class="mobile-row"><div class="mobile-label">Type</div><div class="mobile-value">${typeLabelMap.get(r.leave_type_id) || '-'}</div></div><div class="mobile-row"><div class="mobile-label">Period</div><div class="mobile-value">${r.start_date || '-'} → ${r.end_date || '-'}</div></div><div class="mobile-row"><div class="mobile-label">Total days</div><div class="mobile-value">${r.total_days ?? '-'}</div></div><div class="mobile-row"><div class="mobile-label">Status</div><div class="mobile-value">${statusBadge(r.status)}</div></div><div class="mobile-row"><div class="mobile-label">Note</div><div class="mobile-value">${r.note || '-'}</div></div>${profile.role === 'admin' && r.status === 'pending' ? `<div class="mobile-actions"><button class="btn btn-small" data-action="approve" data-id="${r.id}">Approve</button><button class="btn btn-small" data-action="reject" data-id="${r.id}">Reject</button></div>` : ''}</article>`).join('')
-      : '<div class="mobile-record">There are no requests yet.</div>'
-  }
+function renderBalancesTable(){ 
+const body = document.getElementById('balancesTableBody') 
+body.innerHTML = balances.length 
+? balances.map(b => `<tr><td>${b.full_name}</td><td>${b.email}</td><td>${formatNumber(b.annual_allowance)}</td><td>${formatNumber(b.approved_days)}</td><td>${formatNumber(b.pending_days)}</td><td>${formatNumber(b.remaining_days)}</td></tr>`).join('') 
+: '<tr><td colspan="6">No data available.</td></tr>' 
 
-  function computeBalances(rows, employeesList){
-    return employeesList.map(emp => {
-      const empRows = rows.filter(r => r.employee_id === emp.id)
-      const approved = empRows.reduce((sum, r) => r.status === 'approved' && countsAgainstBalance(r.leave_type_id) ? sum + Number(r.total_days || 0) : sum, 0)
-      const pending = empRows.reduce((sum, r) => r.status === 'pending' && countsAgainstBalance(r.leave_type_id) ? sum + Number(r.total_days || 0) : sum, 0)
-      const annual = Number(emp.annual_allowance || 0)
-      return { full_name: emp.full_name, email: emp.email, annual_allowance: annual, approved_days: approved, pending_days: pending, remaining_days: Math.max(annual - approved, 0) }
-    })
-  }
+document.getElementById('balancesMobileList').innerHTML = balances.length 
+? balances.map(b => `<article class="mobile-record"><div class="mobile-row"><div class="mobile-label">Name</div><div class="mobile-value">${b.full_name}</div></div><div class="mobile-row"><div class="mobile-label">Email</div><div class="mobile-value">${b.email}</div></div><div class="mobile-row"><div class="mobile-label">Total per year</div><div class="mobile-value">${formatNumber(b.annual_allowance)}</div></div><div class="mobile-row"><div class="mobile-label">Approved</div><div class="mobile-value">${formatNumber(b.approved_days)}</div></div><div class="mobile-row"><div class="mobile-label">Pending</div><div class="mobile-value">${formatNumber(b.pending_days)}</div></div><div class="mobile-row"><div class="mobile-label">Remaining</div><div class="mobile-value">${formatNumber(b.remaining_days)}</div></div></article>`).join('') 
+: '<div class="mobile-record">No data available.</div>' 
+} 
 
-  function renderBalancesTable(){
-    const body = document.getElementById('balancesTableBody')
-    body.innerHTML = balances.length
-      ? balances.map(b => `<tr><td>${b.full_name}</td><td>${b.email}</td><td>${formatNumber(b.annual_allowance)}</td><td>${formatNumber(b.approved_days)}</td><td>${formatNumber(b.pending_days)}</td><td>${formatNumber(b.remaining_days)}</td></tr>`).join('')
-      : '<tr><td colspan="6">No data available.</td></tr>'
+async function loadProfile(){ 
+const { data: { user }, error: uErr } = await supabase.auth.getUser() 
+if(uErr) throw uErr 
+if(!user) return null 
+const { data, error } = await supabase.from('employees').select('id, full_name, email, role, annual_allowance, is_active').eq('auth_user_id', user.id).single() 
+if(error) throw error 
+profile = data 
+profile.auth_user_id = user.id 
+return data 
+} 
 
-    document.getElementById('balancesMobileList').innerHTML = balances.length
-      ? balances.map(b => `<article class="mobile-record"><div class="mobile-row"><div class="mobile-label">Name</div><div class="mobile-value">${b.full_name}</div></div><div class="mobile-row"><div class="mobile-label">Email</div><div class="mobile-value">${b.email}</div></div><div class="mobile-row"><div class="mobile-label">Total per year</div><div class="mobile-value">${formatNumber(b.annual_allowance)}</div></div><div class="mobile-row"><div class="mobile-label">Approved</div><div class="mobile-value">${formatNumber(b.approved_days)}</div></div><div class="mobile-row"><div class="mobile-label">Pending</div><div class="mobile-value">${formatNumber(b.pending_days)}</div></div><div class="mobile-row"><div class="mobile-label">Remaining</div><div class="mobile-value">${formatNumber(b.remaining_days)}</div></div></article>`).join('')
-      : '<div class="mobile-record">No data available.</div>'
-  }
+async function loadLeaveTypes(){ 
+let { data, error } = await supabase.from('leave_types').select('id, name, counts_against_balance, requires_document, is_medical').order('name') 
+if(error) throw error 
+leaveTypes = data || [] 
+await ensureFixedLeaveTypes() 
+const secondLoad = await supabase.from('leave_types').select('id, name, counts_against_balance, requires_document, is_medical').order('name') 
+if(secondLoad.error) throw secondLoad.error 
+leaveTypes = secondLoad.data || [] 
+renderLeaveTypes() 
+} 
 
-  async function loadProfile(){
-    const { data: { user }, error: uErr } = await supabase.auth.getUser()
-    if(uErr) throw uErr
-    if(!user) return null
-    const { data, error } = await supabase.from('employees').select('id, full_name, email, role, annual_allowance, is_active').eq('auth_user_id', user.id).single()
-    if(error) throw error
-    profile = data
-    profile.auth_user_id = user.id
-    return data
-  }
+async function loadEmployees(){ 
+if(profile.role === 'admin'){ 
+const { data, error } = await supabase.from('employees').select('id, full_name, email, role, annual_allowance, is_active').order('full_name') 
+if(error) throw error 
+employees = data || [] 
+} else { 
+employees = [profile] 
+} 
+renderEmployeesTable(employees) 
+} 
 
-  async function loadLeaveTypes(){
-    let { data, error } = await supabase.from('leave_types').select('id, name, counts_against_balance, requires_document, is_medical').order('name')
-    if(error) throw error
-    leaveTypes = data || []
-    await ensureFixedLeaveTypes()
-    const secondLoad = await supabase.from('leave_types').select('id, name, counts_against_balance, requires_document, is_medical').order('name')
-    if(secondLoad.error) throw secondLoad.error
-    leaveTypes = secondLoad.data || []
-    renderLeaveTypes()
-  }
+async function loadRequests(){ 
+if(profile.role === 'admin'){ 
+const { data, error } = await supabase.from('leave_requests').select('id, employee_id, leave_type_id, start_date, end_date, total_days, status, note, created_at, employee:employees!leave_requests_employee_id_fkey(full_name)').order('created_at', { ascending: false }) 
+if(error) throw error 
+requests = data || [] 
+} else { 
+const { data, error } = await supabase.from('leave_requests').select('id, employee_id, leave_type_id, start_date, end_date, total_days, status, note, created_at').eq('employee_id', profile.id).order('created_at', { ascending: false }) 
+if(error) throw error 
+requests = data || [] 
+} 
+renderRequests() 
+} 
 
-  async function loadEmployees(){
-    if(profile.role === 'admin'){
-      const { data, error } = await supabase.from('employees').select('id, full_name, email, role, annual_allowance, is_active').order('full_name')
-      if(error) throw error
-      employees = data || []
-    } else {
-      employees = [profile]
-    }
-    renderEmployeesTable(employees)
-  }
+async function refreshAll(){ 
+hide('appError') 
+await loadLeaveTypes() 
+await loadEmployees() 
+await loadRequests() 
+balances = computeBalances(requests, profile.role === 'admin' ? employees : [profile]) 
+renderBalancesTable() 
+} 
 
-  async function loadRequests(){
-    if(profile.role === 'admin'){
-      const { data, error } = await supabase.from('leave_requests').select('id, employee_id, leave_type_id, start_date, end_date, total_days, status, note, created_at, employee:employees!leave_requests_employee_id_fkey(full_name)').order('created_at', { ascending: false })
-      if(error) throw error
-      requests = data || []
-    } else {
-      const { data, error } = await supabase.from('leave_requests').select('id, employee_id, leave_type_id, start_date, end_date, total_days, status, note, created_at').eq('employee_id', profile.id).order('created_at', { ascending: false })
-      if(error) throw error
-      requests = data || []
-    }
-    renderRequests()
-  }
+async function boot(){ 
+hide('appError') 
+await loadProfile() 
+if(!profile){ 
+show('loginError', 'The account exists in Auth, but was not found in employees.') 
+return 
+} 
+loginScreen.classList.add('hidden') 
+appScreen.classList.remove('hidden') 
+renderProfile() 
+try{ 
+await refreshAll() 
+}catch(err){ 
+console.error(err) 
+show('appError', 'Error loading data: ' + (err.message || JSON.stringify(err))) 
+} 
+} 
 
-  async function refreshAll(){
-    hide('appError')
-    await loadLeaveTypes()
-    await loadEmployees()
-    await loadRequests()
-    balances = computeBalances(requests, profile.role === 'admin' ? employees : [profile])
-    renderBalancesTable()
-  }
+document.getElementById('loginForm').addEventListener('submit', async e => { 
+e.preventDefault() 
+hide('loginError') 
+const email = document.getElementById('email').value.trim() 
+const password = document.getElementById('password').value 
+const { error } = await supabase.auth.signInWithPassword({ email, password }) 
+if(error){ show('loginError', error.message); return } 
+await boot() 
+}) 
 
-  async function boot(){
-    hide('appError')
-    await loadProfile()
-    if(!profile){
-      show('loginError', 'The account exists in Auth, but was not found in employees.')
-      return
-    }
-    loginScreen.classList.add('hidden')
-    appScreen.classList.remove('hidden')
-    renderProfile()
-    try{
-      await refreshAll()
-    }catch(err){
-      console.error(err)
-      show('appError', 'Error loading data: ' + (err.message || JSON.stringify(err)))
-    }
-  }
+document.getElementById('logoutBtn').addEventListener('click', async () => { 
+await supabase.auth.signOut() 
+appScreen.classList.add('hidden') 
+loginScreen.classList.remove('hidden') 
+}) 
 
-  document.getElementById('loginForm').addEventListener('submit', async e => {
-    e.preventDefault()
-    hide('loginError')
-    const email = document.getElementById('email').value.trim()
-    const password = document.getElementById('password').value
-    const { error } = await supabase.auth.signInWithPassword({ email, password })
-    if(error){ show('loginError', error.message); return }
-    await boot()
-  })
+document.querySelectorAll('[data-view]').forEach(btn => btn.addEventListener('click', () => { 
+document.querySelectorAll('[data-view]').forEach(b => b.classList.remove('active')) 
+document.querySelectorAll(`[data-view="${btn.dataset.view}"]`).forEach(b => b.classList.add('active')) 
+document.querySelectorAll('.view').forEach(v => v.classList.add('hidden')) 
+document.getElementById('view-' + btn.dataset.view).classList.remove('hidden') 
+window.scrollTo({ top: 0, behavior: 'smooth' }) 
+})) 
 
-  document.getElementById('logoutBtn').addEventListener('click', async () => {
-    await supabase.auth.signOut()
-    appScreen.classList.add('hidden')
-    loginScreen.classList.remove('hidden')
-  })
+document.getElementById('startDate').addEventListener('change', () => { 
+const v = calcDays(document.getElementById('startDate').value, document.getElementById('endDate').value) 
+if(v) document.getElementById('totalDays').value = v 
+}) 
 
-  document.querySelectorAll('[data-view]').forEach(btn => btn.addEventListener('click', () => {
-    document.querySelectorAll('[data-view]').forEach(b => b.classList.remove('active'))
-    document.querySelectorAll(`[data-view="${btn.dataset.view}"]`).forEach(b => b.classList.add('active'))
-    document.querySelectorAll('.view').forEach(v => v.classList.add('hidden'))
-    document.getElementById('view-' + btn.dataset.view).classList.remove('hidden')
-    window.scrollTo({ top: 0, behavior: 'smooth' })
-  }))
+document.getElementById('endDate').addEventListener('change', () => { 
+const v = calcDays(document.getElementById('startDate').value, document.getElementById('endDate').value) 
+if(v) document.getElementById('totalDays').value = v 
+}) 
 
-  document.getElementById('startDate').addEventListener('change', updateTotalDaysField)
-  document.getElementById('endDate').addEventListener('change', updateTotalDaysField)
+document.getElementById('requestForm').addEventListener('submit', async e => { 
+e.preventDefault() 
+hide('appError'); hide('appSuccess') 
+try { 
+const payload = { 
+employee_id: profile.id, 
+leave_type_id: document.getElementById('leaveTypeSelect').value || null, 
+start_date: document.getElementById('startDate').value, 
+end_date: document.getElementById('endDate').value, 
+total_days: Number(document.getElementById('totalDays').value), 
+note: document.getElementById('requestNote').value.trim() || null 
+} 
+const { error } = await supabase.from('leave_requests').insert(payload) 
+if(error) throw error 
+document.getElementById('requestForm').reset() 
+show('appSuccess', 'The request was submitted successfully.') 
+await refreshAll() 
+} catch(err) { 
+console.error(err) 
+show('appError', 'Could not save the request: ' + (err.message || JSON.stringify(err)) + ' — check the INSERT policy on leave_requests and leave_types.') 
+} 
+}) 
 
-  document.getElementById('requestForm').addEventListener('submit', async e => {
-    e.preventDefault()
-    hide('appError'); hide('appSuccess')
+document.getElementById('requestsTableBody').addEventListener('click', async e => { 
+const btn = e.target.closest('[data-action]') 
+if(!btn) return 
+hide('appError'); hide('appSuccess') 
+try { 
+const status = btn.dataset.action === 'approve' ? 'approved' : 'rejected' 
+const { error } = await supabase.from('leave_requests').update({ status }).eq('id', btn.dataset.id) 
+if(error) throw error 
+show('appSuccess', status === 'approved' ? 'The request was approved.' : 'The request was rejected.') 
+await refreshAll() 
+} catch(err) { 
+console.error(err) 
+show('appError', 'Could not update the request: ' + (err.message || JSON.stringify(err))) 
+} 
+}) 
 
-    try {
-      updateTotalDaysField()
+function downloadCSV(filename, rows){ 
+if(!rows.length){ show('appError', 'There is no data to export.'); return } 
+const headers = Object.keys(rows[0]) 
+const csv = [headers.join(','), ...rows.map(row => headers.map(h => `"${String(row[h] ?? '').replace(/"/g, '""')}"`).join(','))].join('\n') 
+const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' }) 
+const link = document.createElement('a') 
+link.href = URL.createObjectURL(blob) 
+link.download = filename 
+link.click() 
+} 
 
-      const payload = {
-        employee_id: profile.id,
-        leave_type_id: document.getElementById('leaveTypeSelect').value || null,
-        start_date: document.getElementById('startDate').value,
-        end_date: document.getElementById('endDate').value,
-        total_days: Number(document.getElementById('totalDays').value || 0),
-        note: document.getElementById('requestNote').value.trim() || null
-      }
+document.getElementById('exportRequestsBtn')?.addEventListener('click', () => { 
+if(profile.role !== 'admin') return 
+const rows = requests.map(r => ({ employee: r.employee?.full_name || profile.full_name, leave_type: (() => { const t = leaveTypes.find(t => t.id === r.leave_type_id); const n = normalizeName(t?.name); if (n === 'concediu de odihnă' || n === 'concediu de odihna') return 'Vacation leave'; if (n === 'invoire' || n === 'învoire') return 'Time off'; if (n === 'altele') return 'Other'; if (n === 'medical' || n === 'concediu medical') return 'Medical'; return t?.name || ''; })(), start: r.start_date || '', end: r.end_date || '', total_days: r.total_days || '', status: r.status || '', note: r.note || '' })) 
+downloadCSV('cereri-concediu.csv', rows) 
+}) 
 
-      const { error } = await supabase.from('leave_requests').insert(payload)
-      if(error) throw error
+document.getElementById('exportBalancesBtn')?.addEventListener('click', () => { 
+if(profile.role !== 'admin') return 
+const rows = balances.map(b => ({ name: b.full_name, email: b.email, annual_total: b.annual_allowance, approved: b.approved_days, pending: b.pending_days, remaining: b.remaining_days })) 
+downloadCSV('solduri-concediu.csv', rows) 
+}) 
 
-      document.getElementById('requestForm').reset()
-      document.getElementById('totalDays').value = ''
-      show('appSuccess', 'The request was submitted successfully.')
-      await refreshAll()
-    } catch(err) {
-      console.error(err)
-      show('appError', 'Could not save the request: ' + (err.message || JSON.stringify(err)) + ' — check the INSERT policy on leave_requests and leave_types.')
-    }
-  })
-
-  document.getElementById('requestsTableBody').addEventListener('click', async e => {
-    const btn = e.target.closest('[data-action]')
-    if(!btn) return
-    hide('appError'); hide('appSuccess')
-    try {
-      const status = btn.dataset.action === 'approve' ? 'approved' : 'rejected'
-      const { error } = await supabase.from('leave_requests').update({ status }).eq('id', btn.dataset.id)
-      if(error) throw error
-      show('appSuccess', status === 'approved' ? 'The request was approved.' : 'The request was rejected.')
-      await refreshAll()
-    } catch(err) {
-      console.error(err)
-      show('appError', 'Could not update the request: ' + (err.message || JSON.stringify(err)))
-    }
-  })
-
-  function downloadCSV(filename, rows){
-    if(!rows.length){ show('appError', 'There is no data to export.'); return }
-    const headers = Object.keys(rows[0])
-    const csv = [headers.join(','), ...rows.map(row => headers.map(h => `"${String(row[h] ?? '').replace(/"/g, '""')}"`).join(','))].join('\n')
-    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' })
-    const link = document.createElement('a')
-    link.href = URL.createObjectURL(blob)
-    link.download = filename
-    link.click()
-  }
-
-  document.getElementById('exportRequestsBtn')?.addEventListener('click', () => {
-    if(profile.role !== 'admin') return
-    const rows = requests.map(r => ({ employee: r.employee?.full_name || profile.full_name, leave_type: (() => { const t = leaveTypes.find(t => t.id === r.leave_type_id); const n = normalizeName(t?.name); if (n === 'concediu de odihnă' || n === 'concediu de odihna') return 'Vacation leave'; if (n === 'invoire' || n === 'învoire') return 'Time off'; if (n === 'altele') return 'Other'; if (n === 'medical' || n === 'concediu medical') return 'Medical'; return t?.name || ''; })(), start: r.start_date || '', end: r.end_date || '', total_days: r.total_days || '', status: r.status || '', note: r.note || '' }))
-    downloadCSV('cereri-concediu.csv', rows)
-  })
-
-  document.getElementById('exportBalancesBtn')?.addEventListener('click', () => {
-    if(profile.role !== 'admin') return
-    const rows = balances.map(b => ({ name: b.full_name, email: b.email, annual_total: b.annual_allowance, approved: b.approved_days, pending: b.pending_days, remaining: b.remaining_days }))
-    downloadCSV('solduri-concediu.csv', rows)
-  })
-
-  const { data: { session } } = await supabase.auth.getSession()
-  if(session) await boot()
-</script>
+const { data: { session } } = await supabase.auth.getSession() 
+if(session) await boot() 
+</script> 
+</body> 
+</html>
