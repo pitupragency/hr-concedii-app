@@ -2,7 +2,7 @@ name: Supabase keepalive
 
 on:
   schedule:
-    - cron: '0 6 */3 * *'
+    - cron: "0 9 * * 1,4"
   workflow_dispatch:
 
 jobs:
@@ -10,24 +10,21 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Ping Supabase RPC
-        run: |
-          URL="${SUPABASE_URL}/rest/v1/rpc/keepalive"
-          CODE=$(curl -s -o /tmp/resp.txt -w "%{http_code}" \
-            -X POST \
-            -H "apikey: ${SUPABASE_ANON_KEY}" \
-            -H "Authorization: Bearer ${SUPABASE_ANON_KEY}" \
-            -H "Content-Type: application/json" \
-            -d '{}' \
-            "$URL")
-
-          echo "HTTP status: $CODE"
-          cat /tmp/resp.txt
-
-          if [ "$CODE" -lt 200 ] || [ "$CODE" -ge 400 ]; then
-            echo "Ping failed"
-            exit 1
-          fi
+      - name: Ping Supabase healthcheck
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+        run: |
+          URL="${SUPABASE_URL}/rest/v1/healthcheck?select=id&limit=1"
+
+          echo "Pinging Supabase healthcheck..."
+
+          curl --fail --silent --show-error \
+            --connect-timeout 20 \
+            --max-time 60 \
+            -H "apikey: ${SUPABASE_ANON_KEY}" \
+            -H "Authorization: Bearer ${SUPABASE_ANON_KEY}" \
+            "${URL}"
+
+          echo ""
+          echo "Supabase keepalive succeeded."
