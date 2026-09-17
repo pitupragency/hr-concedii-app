@@ -125,7 +125,7 @@ const supabase = createClient(
 
 let profile = null, requests = [], employees = [], leaveTypes = [], balances = []
 
-const FIXED_LEAVE_TYPES = ['Concediu de odihnă', 'Medical', 'Invoire', 'Altele']
+const FIXED_LEAVE_TYPES = ['Concediu de odihnă', 'Medical', Work from Home, 'Altele']
 const ROMANIA_PUBLIC_HOLIDAYS_2026 = new Set([
 '2026-01-01',
 '2026-01-02',
@@ -202,55 +202,11 @@ document.getElementById('kpiApprovedDays').textContent = formatNumber(approvedDa
 document.getElementById('kpiBalance').textContent = profile.role === 'admin' ? '—' : formatNumber(balance)
 }
 
-function toLocalISODate(date){
-  const year = date.getFullYear()
-  const month = String(date.getMonth() + 1).padStart(2, '0')
-  const day = String(date.getDate()).padStart(2, '0')
-  return `${year}-${month}-${day}`
-}
-
-function parseAppDate(value){
-  if(!value) return null
-
-  if(/^\d{4}-\d{2}-\d{2}$/.test(value)){
-    return new Date(`${value}T12:00:00`)
-  }
-
-  if(/^\d{2}\/\d{2}\/\d{4}$/.test(value)){
-    const [day, month, year] = value.split('/')
-    return new Date(`${year}-${month}-${day}T12:00:00`)
-  }
-
-  return null
-}
-
 function calcDays(a, b){
-  if(!a || !b) return ''
-
-  const start = parseAppDate(a)
-  const end = parseAppDate(b)
-
-  if(!start || !end) return ''
-  if(Number.isNaN(start.getTime()) || Number.isNaN(end.getTime())) return ''
-  if(end < start) return ''
-
-  let count = 0
-  const current = new Date(start)
-
-  while(current <= end){
-    const dayOfWeek = current.getDay()
-    const isoDate = toLocalISODate(current)
-    const isWeekend = dayOfWeek === 0 || dayOfWeek === 6
-    const isPublicHoliday = ROMANIA_PUBLIC_HOLIDAYS_2026.has(isoDate)
-
-    if(!isWeekend && !isPublicHoliday){
-      count++
-    }
-
-    current.setDate(current.getDate() + 1)
-  }
-
-  return count
+if(!a || !b) return ''
+const start = new Date(a), end = new Date(b)
+if(end < start) return ''
+return ((end - start) / 86400000) + 1
 }
 
 function renderProfile(){
@@ -269,7 +225,7 @@ const ordered = FIXED_LEAVE_TYPES.map(name => leaveTypes.find(t => normalizeName
 const labelForType = (name) => {
 const n = normalizeName(name)
 if (n === 'concediu de odihnă' || n === 'concediu de odihna') return 'Vacation leave'
-if (n === 'invoire' || n === 'învoire') return 'Time off'
+if (n === 'work from home' || n === 'work from home') return 'Time off'
 if (n === 'altele') return 'Other'
 if (n === 'medical' || n === 'concediu medical') return 'Medical'
 return name
@@ -294,7 +250,7 @@ const typeLabelMap = new Map(leaveTypes.map(t => {
 const n = normalizeName(t.name)
 let label = t.name
 if (n === 'concediu de odihnă' || n === 'concediu de odihna') label = 'Vacation leave'
-else if (n === 'invoire' || n === 'învoire') label = 'Time off'
+else if (n === 'work from home' || n === 'work from home') label = 'Time off'
 else if (n === 'altele') label = 'Other'
 else if (n === 'medical' || n === 'concediu medical') label = 'Medical'
 return [t.id, label]
@@ -490,7 +446,7 @@ link.click()
 
 document.getElementById('exportRequestsBtn')?.addEventListener('click', () => {
 if(profile.role !== 'admin') return
-const rows = requests.map(r => ({ employee: r.employee?.full_name || profile.full_name, leave_type: (() => { const t = leaveTypes.find(t => t.id === r.leave_type_id); const n = normalizeName(t?.name); if (n === 'concediu de odihnă' || n === 'concediu de odihna') return 'Vacation leave'; if (n === 'invoire' || n === 'învoire') return 'Time off'; if (n === 'altele') return 'Other'; if (n === 'medical' || n === 'concediu medical') return 'Medical'; return t?.name || ''; })(), start: r.start_date || '', end: r.end_date || '', total_days: r.total_days || '', status: r.status || '', note: r.note || '' }))
+const rows = requests.map(r => ({ employee: r.employee?.full_name || profile.full_name, leave_type: (() => { const t = leaveTypes.find(t => t.id === r.leave_type_id); const n = normalizeName(t?.name); if (n === 'concediu de odihnă' || n === 'concediu de odihna') return 'Vacation leave'; if (n === 'work from home' || n === 'work from home') return 'Time off'; if (n === 'altele') return 'Other'; if (n === 'medical' || n === 'concediu medical') return 'Medical'; return t?.name || ''; })(), start: r.start_date || '', end: r.end_date || '', total_days: r.total_days || '', status: r.status || '', note: r.note || '' }))
 downloadCSV('cereri-concediu.csv', rows)
 })
 
